@@ -186,21 +186,21 @@ The core library is **transport-agnostic** and **validation-framework-agnostic**
    └──────────────────────┘                    └──────────────────────┘
 ```
 
-## Planned Adapter Packages
+## Adapter Packages
 
-| Package | Role | Status |
-|---|---|---|
-| `MessageValidation` | Core pipeline & abstractions | ✅ Available |
-| `MessageValidation.FluentValidation` | FluentValidation adapter | 🔜 Planned |
-| `MessageValidation.DataAnnotations` | DataAnnotations adapter | 🔜 Planned |
-| `MessageValidation.MqttNet` | MQTTnet transport hook | 🔜 Planned |
-| `MessageValidation.RabbitMQ` | RabbitMQ transport hook | 🔜 Planned |
-| `MessageValidation.Kafka` | Kafka transport hook | 🔜 Planned |
+| Package | Role | Status | Docs |
+|---|---|---|---|
+| `MessageValidation` | Core pipeline & abstractions | ✅ Available | _this file_ |
+| `MessageValidation.FluentValidation` | FluentValidation adapter | ✅ Available | [README](../MessageValidation.FluentValidation/README.md) |
+| `MessageValidation.MqttNet` | MQTTnet transport hook | ✅ Available | [README](../MessageValidation.MqttNet/README.md) |
+| `MessageValidation.DataAnnotations` | DataAnnotations adapter | 🔜 Planned | — |
+| `MessageValidation.RabbitMQ` | RabbitMQ transport hook | 🔜 Planned | — |
+| `MessageValidation.Kafka` | Kafka transport hook | 🔜 Planned | — |
 
 ## Roadmap
 
-- **v0.1** — Core pipeline, abstractions, DI integration, wildcard matching
-- **v0.5** — FluentValidation & DataAnnotations adapters, MQTTnet transport adapter, dead-letter support
+- **v0.1** — Core pipeline, abstractions, DI integration, wildcard matching, FluentValidation adapter, MQTTnet transport adapter
+- **v0.5** — DataAnnotations adapter, dead-letter support, metrics
 - **v1.0** — RabbitMQ & Kafka adapters, `System.Diagnostics.Metrics` observability, source generators for AOT
 - **v2.0** — Middleware-style pipeline (`Use`, `Map`), Azure Service Bus adapter
 
