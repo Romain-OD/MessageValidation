@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <PackageId>MessageValidation</PackageId>
+    <Version>0.1.0-preview.1</Version>
+    <Description>Protocol-agnostic message validation pipeline for .NET — validate messages from MQTT, RabbitMQ, Kafka, and more with DI integration, dead-letter support, and pluggable validation adapters.</Description>
+    <PackageTags>messaging;validation;mqtt;rabbitmq;kafka;pipeline</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.*" />
+  </ItemGroup>
+
+</Project>
