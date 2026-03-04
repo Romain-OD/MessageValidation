@@ -204,7 +204,7 @@ MessageValidation-Project/
 
 ```mermaid
 flowchart LR
-    Transport["🔌 Transport\n(MQTTnet, RabbitMQ,<br/> Kafka…)"]
+    Transport["🔌 Transport <br/> (MQTTnet, RabbitMQ,<br/> Kafka…)"]
     Deserializer["📦 IMessageDeserializer <br/> bytes → object"]
     Validator["✅ IMessageValidator&lt;T&gt; <br/> (FluentValidation,<br/> DataAnnotations…)"]
     Handler["⚡ IMessageHandler&lt;T&gt; <br/> (only if valid)"]
