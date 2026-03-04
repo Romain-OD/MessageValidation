@@ -238,6 +238,12 @@ flowchart LR
 
 - .NET 10+
 
+## Author
+
+- Romain OD
+- [@romainod](www.linkedin.com/in/romain-od) | [GitHub](www.github.com/romain-od)
+- [🌐 www.devskillsunlock.com](www.devskillsunlock.com)
+
 ## License
 
 [MIT](LICENSE)
