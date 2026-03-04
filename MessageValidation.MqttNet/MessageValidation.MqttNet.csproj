@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <PackageId>MessageValidation.MqttNet</PackageId>
+    <Version>0.1.0-preview.1</Version>
+    <Description>MQTTnet transport adapter for MessageValidation — automatically feed MQTTnet messages into the MessageValidation pipeline.</Description>
+    <PackageTags>messaging;validation;mqtt;mqttnet;iot;pipeline</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MessageValidation\MessageValidation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="4.*" />
+  </ItemGroup>
+
+</Project>

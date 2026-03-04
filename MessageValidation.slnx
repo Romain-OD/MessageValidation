@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="../MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" Id="071f91e1-87ce-440a-bfa8-e05c3b9b98e5" />
-  <Project Path="../MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" Id="b18d6a87-0ee6-4ebc-8ec4-cce9f52536e1" />
-  <Project Path="MessageValidation.csproj" />
+  <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />
+  <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
+  <Project Path="MessageValidation/MessageValidation.csproj" />
 </Solution>
