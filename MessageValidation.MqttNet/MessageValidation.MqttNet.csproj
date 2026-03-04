@@ -7,9 +7,14 @@
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.MqttNet</PackageId>
     <Version>0.1.0-preview.1</Version>
+    <Authors>Romain-OD</Authors>
     <Description>MQTTnet transport adapter for MessageValidation — automatically feed MQTTnet messages into the MessageValidation pipeline.</Description>
     <PackageTags>messaging;validation;mqtt;mqttnet;iot;pipeline</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -19,6 +24,10 @@
 
   <ItemGroup>
     <PackageReference Include="MQTTnet" Version="4.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,37 @@
+name: Publish NuGet Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Pack MessageValidation
+        run: dotnet pack MessageValidation/MessageValidation.csproj --configuration Release --no-build --output ./nupkgs
+
+      - name: Pack MessageValidation.FluentValidation
+        run: dotnet pack MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj --configuration Release --no-build --output ./nupkgs
+
+      - name: Pack MessageValidation.MqttNet
+        run: dotnet pack MessageValidation.MqttNet/MessageValidation.MqttNet.csproj --configuration Release --no-build --output ./nupkgs
+
+      - name: Push to NuGet.org
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

@@ -7,9 +7,14 @@
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.FluentValidation</PackageId>
     <Version>0.1.0-preview.1</Version>
+    <Authors>Romain-OD</Authors>
     <Description>FluentValidation adapter for MessageValidation — automatically bridge FluentValidation validators into the MessageValidation pipeline.</Description>
     <PackageTags>messaging;validation;fluentvalidation;pipeline</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -21,6 +26,10 @@
     <PackageReference Include="FluentValidation" Version="11.*" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.*" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
 </Project>
