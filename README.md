@@ -166,24 +166,54 @@ builder.Services.AddValidationFailureHandler<MyFailureHandler>();
 The core library is **transport-agnostic** and **validation-framework-agnostic**. It defines contracts and a pipeline — adapters bring the implementations.
 
 ```
-                    ┌─────────────────────────────┐
-                    │   MessageValidation (core)   │
-                    │                               │
-                    │  IMessageValidator<T>         │
-                    │  IMessageHandler<T>           │
-                    │  IMessageDeserializer         │
-                    │  MessageValidationPipeline    │
-                    └──────────┬──────────┬────────┘
-                               │          │
-              ┌────────────────┘          └────────────────┐
-              ▼                                            ▼
-   ┌─────────────────────┐                    ┌─────────────────────┐
-   │ Validation Adapters  │                    │ Transport Adapters   │
-   │                      │                    │                      │
-   │ • FluentValidation   │                    │ • MQTTnet            │
-   │ • DataAnnotations    │                    │ • RabbitMQ           │
-   │ • Custom             │                    │ • Kafka              │
-   └──────────────────────┘                    └──────────────────────┘
+MessageValidation-Project/
+├── MessageValidation/                          ← Core pipeline (zero opinion)
+│   ├── Abstractions/
+│   │   ├── IMessageValidator.cs                  IMessageValidator<T>
+│   │   ├── IMessageHandler.cs                    IMessageHandler<T>
+│   │   ├── IMessageDeserializer.cs               IMessageDeserializer
+│   │   └── IValidationFailureHandler.cs          IValidationFailureHandler
+│   ├── Configuration/
+│   │   ├── FailureBehavior.cs                    Log | DeadLetter | Skip | Throw | Custom
+│   │   └── MessageValidationOptions.cs           Source-to-type mapping + wildcards
+│   ├── Models/
+│   │   ├── MessageContext.cs                     Protocol-agnostic envelope
+│   │   ├── MessageValidationResult.cs            Validation outcome
+│   │   └── MessageValidationError.cs             Single error record
+│   ├── Pipeline/
+│   │   ├── MessageValidationPipeline.cs          Deserialize → Validate → Dispatch
+│   │   └── MessageValidationException.cs         Thrown on FailureBehavior.ThrowException
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddMessageValidation(), AddMessageHandler<,>()
+│
+├── MessageValidation.FluentValidation/         ← Validation adapter
+│   ├── FluentValidationMessageValidator.cs       Bridges IValidator<T> → IMessageValidator<T>
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddMessageFluentValidation()
+│
+├── MessageValidation.MqttNet/                  ← Transport adapter
+│   ├── MqttClientExtensions.cs                   IMqttClient.UseMessageValidation()
+│   ├── MqttServerExtensions.cs                   MqttServer.UseMessageValidation()
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddMqttNetMessageValidation()
+│
+└── README.md
+```
+
+### Pipeline flow
+
+```mermaid
+flowchart LR
+    Transport["🔌 Transport\n(MQTTnet, RabbitMQ,<br/> Kafka…)"]
+    Deserializer["📦 IMessageDeserializer <br/> bytes → object"]
+    Validator["✅ IMessageValidator&lt;T&gt; <br/> (FluentValidation,<br/> DataAnnotations…)"]
+    Handler["⚡ IMessageHandler&lt;T&gt; <br/> (only if valid)"]
+    Failure["⚠️ Failure Handler <br/> Log / DeadLetter / <br/> Skip / Throw / Custom"]
+
+    Transport -->|raw bytes| Deserializer
+    Deserializer -->|typed message| Validator
+    Validator -->|valid| Handler
+    Validator -->|invalid| Failure
 ```
 
 ## Adapter Packages
@@ -191,8 +221,8 @@ The core library is **transport-agnostic** and **validation-framework-agnostic**
 | Package | Role | Status | Docs |
 |---|---|---|---|
 | `MessageValidation` | Core pipeline & abstractions | ✅ Available | _this file_ |
-| `MessageValidation.FluentValidation` | FluentValidation adapter | ✅ Available | [README](../MessageValidation.FluentValidation/README.md) |
-| `MessageValidation.MqttNet` | MQTTnet transport hook | ✅ Available | [README](../MessageValidation.MqttNet/README.md) |
+| `MessageValidation.FluentValidation` | FluentValidation adapter | ✅ Available | [README](MessageValidation.FluentValidation/README.md) |
+| `MessageValidation.MqttNet` | MQTTnet transport hook | ✅ Available | [README](MessageValidation.MqttNet/README.md) |
 | `MessageValidation.DataAnnotations` | DataAnnotations adapter | 🔜 Planned | — |
 | `MessageValidation.RabbitMQ` | RabbitMQ transport hook | 🔜 Planned | — |
 | `MessageValidation.Kafka` | Kafka transport hook | 🔜 Planned | — |
