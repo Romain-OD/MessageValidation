@@ -1,5 +1,9 @@
 <Solution>
+  <Folder Name="/examples/">
+    <Project Path="examples/MessageValidation.Example/MessageValidation.Example.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
+    <File Path="MessageValidation-logo.png" />
     <File Path="README.md" />
   </Folder>
   <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />

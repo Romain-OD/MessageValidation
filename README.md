@@ -105,7 +105,7 @@ builder.Services.AddMessageHandler<TemperatureReading, TemperatureHandler>();
 Feed messages into the pipeline from any transport:
 
 ```csharp
-var pipeline = serviceProvider.GetRequiredService<MessageValidationPipeline>();
+var pipeline = serviceProvider.GetRequiredService<IMessageValidationPipeline>();
 
 var context = new MessageContext
 {
@@ -156,6 +156,7 @@ builder.Services.AddValidationFailureHandler<MyFailureHandler>();
 
 | Interface | Purpose |
 |---|---|
+| `IMessageValidationPipeline` | Core pipeline contract (mockable) |
 | `IMessageValidator<T>` | Validates a deserialized message |
 | `IMessageHandler<T>` | Handles a validated message |
 | `IMessageDeserializer` | Converts raw bytes to a typed object |
@@ -169,6 +170,7 @@ The core library is **transport-agnostic** and **validation-framework-agnostic**
 MessageValidation-Project/
 ├── MessageValidation/                          ← Core pipeline (zero opinion)
 │   ├── Abstractions/
+│   │   ├── IMessageValidationPipeline.cs          IMessageValidationPipeline
 │   │   ├── IMessageValidator.cs                  IMessageValidator<T>
 │   │   ├── IMessageHandler.cs                    IMessageHandler<T>
 │   │   ├── IMessageDeserializer.cs               IMessageDeserializer
