@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.FluentValidation</PackageId>
-    <Version>0.1.0-preview.1</Version>
+    <Version>0.1.0-preview.2</Version>
     <Authors>Romain-OD</Authors>
     <Description>FluentValidation adapter for MessageValidation — automatically bridge FluentValidation validators into the MessageValidation pipeline.</Description>
     <PackageTags>messaging;validation;fluentvalidation;pipeline</PackageTags>
