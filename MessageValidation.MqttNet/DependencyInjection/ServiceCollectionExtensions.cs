@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
         {
             var factory = new MQTTnet.MqttFactory();
             var client = factory.CreateMqttClient();
-            var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+            var pipeline = sp.GetRequiredService<IMessageValidationPipeline>();
 
             client.UseMessageValidation(pipeline);
             configureMqttClient?.Invoke(client);

@@ -9,7 +9,7 @@ namespace MessageValidation.MqttNet;
 public static class MqttServerExtensions
 {
     /// <summary>
-    /// Hooks the <see cref="MessageValidationPipeline"/> into the MQTTnet server's
+    /// Hooks the <see cref="IMessageValidationPipeline"/> into the MQTTnet server's
     /// <see cref="MqttServer.InterceptingPublishAsync"/> event so that every
     /// published message is automatically deserialized, validated, and dispatched.
     /// </summary>
@@ -18,7 +18,7 @@ public static class MqttServerExtensions
     /// <returns>The same <see cref="MqttServer"/> for chaining.</returns>
     public static MqttServer UseMessageValidation(
         this MqttServer server,
-        MessageValidationPipeline pipeline)
+        IMessageValidationPipeline pipeline)
     {
         server.InterceptingPublishAsync += async e =>
         {

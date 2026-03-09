@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace MessageValidation;
 
@@ -17,8 +19,10 @@ public static class ServiceCollectionExtensions
         var options = new MessageValidationOptions();
         configure(options);
 
+        services.AddLogging();
         services.AddSingleton(options);
         services.AddSingleton<MessageValidationPipeline>();
+        services.TryAddSingleton<IMessageValidationPipeline>(sp => sp.GetRequiredService<MessageValidationPipeline>());
 
         return services;
     }

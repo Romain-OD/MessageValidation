@@ -186,4 +186,72 @@ public class MessageValidationPipelineTests
             Arg.Any<MessageContext>(),
             Arg.Any<CancellationToken>());
     }
+
+    [Fact]
+    public async Task ProcessAsync_SkipBehavior_DoesNotInvokeHandlerOrThrow()
+    {
+        var handler = Substitute.For<IMessageHandler<TestMessage>>();
+
+        await using var sp = BuildProvider(
+            o =>
+            {
+                o.MapSource<TestMessage>("test/topic");
+                o.DefaultFailureBehavior = FailureBehavior.Skip;
+            },
+            s =>
+            {
+                s.AddScoped(_ =>
+                {
+                    var validator = Substitute.For<IMessageValidator<TestMessage>>();
+                    validator.ValidateAsync(Arg.Any<TestMessage>(), Arg.Any<CancellationToken>())
+                        .Returns(MessageValidationResult.Failure([new MessageValidationError("Name", "Required")]));
+                    return validator;
+                });
+                s.AddScoped(_ => handler);
+            });
+
+        var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+        var context = TestHelpers.CreateContext("test/topic", new TestMessage { Name = "" });
+
+        await pipeline.ProcessAsync(context);
+
+        await handler.DidNotReceive().HandleAsync(
+            Arg.Any<TestMessage>(),
+            Arg.Any<MessageContext>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task ProcessAsync_DeadLetterBehavior_InvokesFailureHandler()
+    {
+        var failureHandler = Substitute.For<IValidationFailureHandler>();
+
+        await using var sp = BuildProvider(
+            o =>
+            {
+                o.MapSource<TestMessage>("test/topic");
+                o.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+            },
+            s =>
+            {
+                s.AddScoped(_ =>
+                {
+                    var validator = Substitute.For<IMessageValidator<TestMessage>>();
+                    validator.ValidateAsync(Arg.Any<TestMessage>(), Arg.Any<CancellationToken>())
+                        .Returns(MessageValidationResult.Failure([new MessageValidationError("Name", "Required")]));
+                    return validator;
+                });
+                s.AddScoped(_ => failureHandler);
+            });
+
+        var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+        var context = TestHelpers.CreateContext("test/topic", new TestMessage { Name = "" });
+
+        await pipeline.ProcessAsync(context);
+
+        await failureHandler.Received(1).HandleAsync(
+            Arg.Any<MessageValidationResult>(),
+            Arg.Any<MessageContext>(),
+            Arg.Any<CancellationToken>());
+    }
 }

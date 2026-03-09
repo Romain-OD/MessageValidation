@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+
 namespace MessageValidation;
 
 /// <summary>
@@ -5,7 +7,7 @@ namespace MessageValidation;
 /// </summary>
 public sealed class MessageValidationOptions
 {
-    private readonly Dictionary<string, Type> _sourceMappings = [];
+    private readonly ConcurrentDictionary<string, Type> _sourceMappings = new();
 
     /// <summary>
     /// Default behavior when validation fails.

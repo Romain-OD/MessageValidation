@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 namespace MessageValidation.Tests;
 
 public class ServiceCollectionExtensionsTests
@@ -8,7 +7,6 @@ public class ServiceCollectionExtensionsTests
     public void AddMessageValidation_RegistersPipelineAndOptions()
     {
         var services = new ServiceCollection();
-        services.AddLogging();
         services.AddSingleton<IMessageDeserializer>(new JsonTestDeserializer());
 
         services.AddMessageValidation(options =>
@@ -20,6 +18,7 @@ public class ServiceCollectionExtensionsTests
 
         Assert.NotNull(sp.GetService<MessageValidationOptions>());
         Assert.NotNull(sp.GetService<MessageValidationPipeline>());
+        Assert.NotNull(sp.GetService<IMessageValidationPipeline>());
     }
 
     [Fact]

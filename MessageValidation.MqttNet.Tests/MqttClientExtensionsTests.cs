@@ -10,7 +10,7 @@ public class MqttClientExtensionsTests
     public void UseMessageValidation_ReturnsSameClient()
     {
         var client = new MqttFactory().CreateMqttClient();
-        var pipeline = Substitute.For<MessageValidationPipeline>();
+        var pipeline = Substitute.For<IMessageValidationPipeline>();
 
         var result = client.UseMessageValidation(pipeline);
 

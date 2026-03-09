@@ -9,7 +9,7 @@ namespace MessageValidation.MqttNet;
 public static class MqttClientExtensions
 {
     /// <summary>
-    /// Hooks the <see cref="MessageValidationPipeline"/> into the MQTTnet client's
+    /// Hooks the <see cref="IMessageValidationPipeline"/> into the MQTTnet client's
     /// <see cref="IMqttClient.ApplicationMessageReceivedAsync"/> event so that every
     /// incoming message is automatically deserialized, validated, and dispatched.
     /// </summary>
@@ -18,7 +18,7 @@ public static class MqttClientExtensions
     /// <returns>The same <see cref="IMqttClient"/> for chaining.</returns>
     public static IMqttClient UseMessageValidation(
         this IMqttClient client,
-        MessageValidationPipeline pipeline)
+        IMessageValidationPipeline pipeline)
     {
         client.ApplicationMessageReceivedAsync += async e =>
         {
