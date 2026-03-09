@@ -4,5 +4,6 @@
   </Folder>
   <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />
   <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
+  <Project Path="MessageValidation.Tests/MessageValidation.Tests.csproj" />
   <Project Path="MessageValidation/MessageValidation.csproj" />
 </Solution>
