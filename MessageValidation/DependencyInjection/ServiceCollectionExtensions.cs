@@ -20,7 +20,9 @@ public static class ServiceCollectionExtensions
         configure(options);
 
         services.AddLogging();
+        services.AddMetrics();
         services.AddSingleton(options);
+        services.TryAddSingleton<MessageValidationMetrics>();
         services.AddSingleton<MessageValidationPipeline>();
         services.TryAddSingleton<IMessageValidationPipeline>(sp => sp.GetRequiredService<MessageValidationPipeline>());
 

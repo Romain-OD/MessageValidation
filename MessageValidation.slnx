@@ -6,7 +6,11 @@
     <File Path="MessageValidation-logo.png" />
     <File Path="README.md" />
   </Folder>
+  <Project Path="MessageValidation.DataAnnotations.Tests/MessageValidation.DataAnnotations.Tests.csproj" />
+  <Project Path="MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj" Id="b566e81c-5728-4a53-9908-348a6907f810" />
+  <Project Path="MessageValidation.FluentValidation.Tests/MessageValidation.FluentValidation.Tests.csproj" />
   <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />
+  <Project Path="MessageValidation.MqttNet.Tests/MessageValidation.MqttNet.Tests.csproj" />
   <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
   <Project Path="MessageValidation.Tests/MessageValidation.Tests.csproj" />
   <Project Path="MessageValidation/MessageValidation.csproj" />

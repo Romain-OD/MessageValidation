@@ -5,11 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
-    <PackageId>MessageValidation</PackageId>
+    <PackageId>MessageValidation.DataAnnotations</PackageId>
     <Version>0.2.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>Protocol-agnostic message validation pipeline for .NET — validate messages from MQTT, RabbitMQ, Kafka, and more with DI integration, dead-letter support, and pluggable validation adapters.</Description>
-    <PackageTags>messaging;validation;mqtt;rabbitmq;kafka;pipeline</PackageTags>
+    <Description>DataAnnotations adapter for MessageValidation — validate messages using System.ComponentModel.DataAnnotations attributes in the MessageValidation pipeline.</Description>
+    <PackageTags>messaging;validation;dataannotations;pipeline</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
@@ -20,14 +20,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.*" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics" Version="10.*" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.*" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.*" />
+    <ProjectReference Include="..\MessageValidation\MessageValidation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="/" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
     <None Include="..\MessageValidation-logo.png" Pack="true" PackagePath="/" />
   </ItemGroup>
 

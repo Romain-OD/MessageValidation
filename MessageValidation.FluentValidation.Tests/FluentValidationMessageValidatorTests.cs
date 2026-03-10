@@ -47,9 +47,9 @@ public class FluentValidationMessageValidatorTests
     public async Task ValidateAsync_NoRules_ReturnsSuccess()
     {
         var fluentValidator = new AlwaysValidValidator();
-        var adapter = new FluentValidationMessageValidator<TestMessage>(fluentValidator);
+        var adapter = new FluentValidationMessageValidator<NoRulesMessage>(fluentValidator);
 
-        var result = await adapter.ValidateAsync(new TestMessage());
+        var result = await adapter.ValidateAsync(new NoRulesMessage());
 
         Assert.True(result.IsValid);
     }

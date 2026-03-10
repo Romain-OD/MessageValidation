@@ -12,11 +12,13 @@ public class MessageValidationPipelineTests
     {
         var services = new ServiceCollection();
         services.AddLogging(b => b.AddDebug());
+        services.AddMetrics();
 
         var options = new MessageValidationOptions();
         configure(options);
 
         services.AddSingleton(options);
+        services.AddSingleton<MessageValidationMetrics>();
         services.AddSingleton<IMessageDeserializer>(new JsonTestDeserializer());
 
         configureServices?.Invoke(services);

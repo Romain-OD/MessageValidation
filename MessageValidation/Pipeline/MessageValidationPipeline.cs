@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,16 +13,23 @@ public sealed class MessageValidationPipeline(
     IServiceScopeFactory scopeFactory,
     MessageValidationOptions options,
     IMessageDeserializer deserializer,
-    ILogger<MessageValidationPipeline> logger) : IMessageValidationPipeline
+    ILogger<MessageValidationPipeline> logger,
+    MessageValidationMetrics metrics) : IMessageValidationPipeline
 {
     private static readonly ConcurrentDictionary<Type, Func<object, object, CancellationToken, Task<MessageValidationResult>>> _validateDelegates = new();
     private static readonly ConcurrentDictionary<Type, Func<object, object, MessageContext, CancellationToken, Task>> _handleDelegates = new();
 
     public async Task ProcessAsync(MessageContext context, CancellationToken ct = default)
     {
+        var sw = Stopwatch.StartNew();
+        metrics.RecordProcessed(context.Source);
+
         if (!options.TryResolveMessageType(context.Source, out var messageType) || messageType is null)
         {
             logger.LogWarning("No mapping found for source {Source}", context.Source);
+            metrics.RecordUnmapped(context.Source);
+            sw.Stop();
+            metrics.RecordDuration(context.Source, sw.Elapsed.TotalMilliseconds);
             return;
         }
 
@@ -38,7 +46,10 @@ public sealed class MessageValidationPipeline(
 
             if (!result.IsValid)
             {
+                metrics.RecordFailed(context.Source);
                 await HandleFailureAsync(scope.ServiceProvider, result, context, ct);
+                sw.Stop();
+                metrics.RecordDuration(context.Source, sw.Elapsed.TotalMilliseconds);
                 return;
             }
         }
@@ -50,6 +61,10 @@ public sealed class MessageValidationPipeline(
             var handleDelegate = _handleDelegates.GetOrAdd(messageType, BuildHandleDelegate);
             await handleDelegate(handler, message, context, ct);
         }
+
+        metrics.RecordSucceeded(context.Source);
+        sw.Stop();
+        metrics.RecordDuration(context.Source, sw.Elapsed.TotalMilliseconds);
     }
 
     private async Task HandleFailureAsync(

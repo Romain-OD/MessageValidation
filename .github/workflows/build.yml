@@ -29,3 +29,4 @@ jobs:
           dotnet pack MessageValidation/MessageValidation.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.MqttNet/MessageValidation.MqttNet.csproj --configuration Release --no-build --output ./nupkgs
+          dotnet pack MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj --configuration Release --no-build --output ./nupkgs

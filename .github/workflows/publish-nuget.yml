@@ -33,5 +33,8 @@ jobs:
       - name: Pack MessageValidation.MqttNet
         run: dotnet pack MessageValidation.MqttNet/MessageValidation.MqttNet.csproj --configuration Release --no-build --output ./nupkgs
 
+      - name: Pack MessageValidation.DataAnnotations
+        run: dotnet pack MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj --configuration Release --no-build --output ./nupkgs
+
       - name: Push to NuGet.org
         run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

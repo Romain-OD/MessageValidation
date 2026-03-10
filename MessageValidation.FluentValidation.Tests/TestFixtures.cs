@@ -17,7 +17,12 @@ public class TestMessageValidator : AbstractValidator<TestMessage>
     }
 }
 
-public class AlwaysValidValidator : AbstractValidator<TestMessage>
+public class NoRulesMessage
+{
+    public string Data { get; set; } = "";
+}
+
+public class AlwaysValidValidator : AbstractValidator<NoRulesMessage>
 {
     // No rules — always passes
 }

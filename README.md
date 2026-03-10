@@ -225,7 +225,7 @@ flowchart LR
 | `MessageValidation` | Core pipeline & abstractions | ✅ Available | _this file_ |
 | `MessageValidation.FluentValidation` | FluentValidation adapter | ✅ Available | [README](MessageValidation.FluentValidation/README.md) |
 | `MessageValidation.MqttNet` | MQTTnet transport hook | ✅ Available | [README](MessageValidation.MqttNet/README.md) |
-| `MessageValidation.DataAnnotations` | DataAnnotations adapter | 🔜 Planned | — |
+| `MessageValidation.DataAnnotations` | DataAnnotations adapter | ✅ Available | [README](MessageValidation.DataAnnotations/README.md) |
 | `MessageValidation.RabbitMQ` | RabbitMQ transport hook | 🔜 Planned | — |
 | `MessageValidation.Kafka` | Kafka transport hook | 🔜 Planned | — |
 
