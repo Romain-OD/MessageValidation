@@ -47,4 +47,4 @@ Messages implementing `IValidatableObject` are also supported for cross-property
 ## Requirements
 
 - .NET 10+
-- [MessageValidation](https://www.nuget.org/packages/MessageValidation) >= 0.2.0
+- [MessageValidation](https://www.nuget.org/packages/MessageValidation) >= 0.3.0

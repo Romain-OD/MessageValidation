@@ -138,7 +138,7 @@ Configure how validation failures are handled:
 | Behavior | Description |
 |---|---|
 | `Log` | Log the errors and drop the message (default) |
-| `DeadLetter` | Route to a dead-letter destination |
+| `DeadLetter` | Route to a dead-letter destination via `IDeadLetterHandler` |
 | `Skip` | Silently skip the message |
 | `ThrowException` | Throw a `MessageValidationException` |
 | `Custom` | Delegate to your `IValidationFailureHandler` implementation |
@@ -150,6 +150,40 @@ options.DefaultFailureBehavior = FailureBehavior.Custom;
 builder.Services.AddValidationFailureHandler<MyFailureHandler>();
 ```
 
+### Dead-Letter Queue
+
+When `FailureBehavior.DeadLetter` is configured, the pipeline computes a dead-letter destination from `DeadLetterPrefix + Source` and delegates to an `IDeadLetterHandler`:
+
+```csharp
+options.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+options.DeadLetterPrefix = "$dead-letter/"; // default — customize as needed
+
+// Register your dead-letter handler
+builder.Services.AddDeadLetterHandler<MyDeadLetterHandler>();
+```
+
+Implement the handler to publish the failed message to your transport's dead-letter destination:
+
+```csharp
+public class MyDeadLetterHandler : IDeadLetterHandler
+{
+    public Task HandleAsync(DeadLetterContext context, CancellationToken ct = default)
+    {
+        // context.Destination       → "$dead-letter/sensors/room1/temperature"
+        // context.OriginalContext    → the original MessageContext (source, payload, metadata)
+        // context.ValidationResult  → the validation errors
+        // context.Timestamp         → UTC time of the dead-letter decision
+        Console.WriteLine($"Dead-lettering to {context.Destination}");
+        return Task.CompletedTask;
+    }
+}
+```
+
+**Resolution priority:** When `DeadLetter` is active, the pipeline resolves handlers in this order:
+1. `IDeadLetterHandler` — preferred (receives full `DeadLetterContext` with computed destination)
+2. `IValidationFailureHandler` — backward-compatible fallback
+3. Log warning — graceful degradation if no handler is registered
+
 ### Abstractions
 
 | Interface | Purpose |
@@ -159,6 +193,7 @@ builder.Services.AddValidationFailureHandler<MyFailureHandler>();
 | `IMessageHandler<T>` | Handles a validated message |
 | `IMessageDeserializer` | Converts raw bytes to a typed object |
 | `IValidationFailureHandler` | Custom logic when validation fails |
+| `IDeadLetterHandler` | Handles dead-lettered messages (receives `DeadLetterContext`) |
 
 ## Architecture
 
@@ -172,7 +207,8 @@ MessageValidation-Project/
 │   │   ├── IMessageValidator.cs                  IMessageValidator<T>
 │   │   ├── IMessageHandler.cs                    IMessageHandler<T>
 │   │   ├── IMessageDeserializer.cs               IMessageDeserializer
-│   │   └── IValidationFailureHandler.cs          IValidationFailureHandler
+│   │   ├── IValidationFailureHandler.cs          IValidationFailureHandler
+│   │   └── IDeadLetterHandler.cs                 IDeadLetterHandler
 │   ├── Configuration/
 │   │   ├── FailureBehavior.cs                    Log | DeadLetter | Skip | Throw | Custom
 │   │   └── MessageValidationOptions.cs           Source-to-type mapping + wildcards
@@ -181,12 +217,13 @@ MessageValidation-Project/
 │   ├── Models/
 │   │   ├── MessageContext.cs                     Protocol-agnostic envelope
 │   │   ├── MessageValidationResult.cs            Validation outcome
-│   │   └── MessageValidationError.cs             Single error record
+│   │   ├── MessageValidationError.cs             Single error record
+│   │   └── DeadLetterContext.cs                  Dead-letter envelope (destination, errors, timestamp)
 │   ├── Pipeline/
 │   │   ├── MessageValidationPipeline.cs          Deserialize → Validate → Dispatch
 │   │   └── MessageValidationException.cs         Thrown on FailureBehavior.ThrowException
 │   └── DependencyInjection/
-│       └── ServiceCollectionExtensions.cs        AddMessageValidation(), AddMessageHandler<,>()
+│       └── ServiceCollectionExtensions.cs        AddMessageValidation(), AddMessageHandler<,>(), AddDeadLetterHandler<>()
 │
 ├── MessageValidation.DataAnnotations/          ← Validation adapter (DataAnnotations)
 │   ├── DataAnnotationsMessageValidator.cs        Bridges DataAnnotations → IMessageValidator<T>
@@ -218,12 +255,14 @@ flowchart LR
     Deserializer["📦 IMessageDeserializer <br/> bytes → object"]
     Validator["✅ IMessageValidator&lt;T&gt; <br/> (FluentValidation,<br/> DataAnnotations…)"]
     Handler["⚡ IMessageHandler&lt;T&gt; <br/> (only if valid)"]
-    Failure["⚠️ Failure Handler <br/> Log / DeadLetter / <br/> Skip / Throw / Custom"]
+    Failure["⚠️ Failure Handler <br/> Log / Skip / Throw / Custom"]
+    DeadLetter["💀 IDeadLetterHandler <br/> DeadLetterContext → <br/> transport DLQ"]
 
     Transport -->|raw bytes| Deserializer
     Deserializer -->|typed message| Validator
     Validator -->|valid| Handler
     Validator -->|invalid| Failure
+    Validator -->|invalid + DeadLetter| DeadLetter
 ```
 
 ## Adapter Packages
@@ -240,7 +279,8 @@ flowchart LR
 ## Roadmap
 
 - **v0.1** — Core pipeline, abstractions, DI integration, wildcard matching, FluentValidation adapter, MQTTnet transport adapter
-- **v0.2** — DataAnnotations adapter, dead-letter support, `System.Diagnostics.Metrics` observability
+- **v0.2** — DataAnnotations adapter, `System.Diagnostics.Metrics` observability
+- **v0.3** — Dead-letter queue support (`IDeadLetterHandler`, `DeadLetterContext`, dead-letter metrics, backward-compatible fallback)
 - **v1.0** — RabbitMQ & Kafka adapters, source generators for AOT
 - **v2.0** — Middleware-style pipeline (`Use`, `Map`), Azure Service Bus adapter
 

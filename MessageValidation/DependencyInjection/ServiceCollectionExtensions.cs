@@ -53,6 +53,18 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
+    /// Registers a dead-letter handler invoked when
+    /// <see cref="FailureBehavior.DeadLetter"/> is configured and validation fails.
+    /// </summary>
+    public static IServiceCollection AddDeadLetterHandler<THandler>(
+        this IServiceCollection services)
+        where THandler : class, IDeadLetterHandler
+    {
+        services.AddScoped<IDeadLetterHandler, THandler>();
+        return services;
+    }
+
+    /// <summary>
     /// Registers a custom message deserializer.
     /// </summary>
     public static IServiceCollection AddMessageDeserializer<TDeserializer>(

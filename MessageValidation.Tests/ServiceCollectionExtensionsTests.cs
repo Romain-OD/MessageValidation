@@ -54,6 +54,17 @@ public class ServiceCollectionExtensionsTests
         Assert.NotNull(sp.GetService<IMessageDeserializer>());
     }
 
+    [Fact]
+    public void AddDeadLetterHandler_RegistersHandler()
+    {
+        var services = new ServiceCollection();
+        services.AddDeadLetterHandler<TestDeadLetterHandler>();
+
+        var sp = services.BuildServiceProvider();
+
+        Assert.NotNull(sp.GetService<IDeadLetterHandler>());
+    }
+
     private class TestHandler : IMessageHandler<TestMessage>
     {
         public Task HandleAsync(TestMessage message, MessageContext context, CancellationToken ct = default) =>
@@ -63,6 +74,12 @@ public class ServiceCollectionExtensionsTests
     private class TestFailureHandler : IValidationFailureHandler
     {
         public Task HandleAsync(MessageValidationResult result, MessageContext context, CancellationToken ct = default) =>
+            Task.CompletedTask;
+    }
+
+    private class TestDeadLetterHandler : IDeadLetterHandler
+    {
+        public Task HandleAsync(DeadLetterContext deadLetterContext, CancellationToken ct = default) =>
             Task.CompletedTask;
     }
 }

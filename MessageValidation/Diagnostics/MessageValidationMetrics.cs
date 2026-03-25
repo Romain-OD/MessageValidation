@@ -16,6 +16,7 @@ public sealed class MessageValidationMetrics
     private readonly Counter<long> _validationSucceeded;
     private readonly Counter<long> _validationFailed;
     private readonly Counter<long> _unmappedSources;
+    private readonly Counter<long> _deadLettered;
     private readonly Histogram<double> _processingDuration;
 
     /// <summary>
@@ -42,6 +43,10 @@ public sealed class MessageValidationMetrics
             "messaging.validation.unmapped",
             description: "Messages with no source mapping");
 
+        _deadLettered = meter.CreateCounter<long>(
+            "messaging.validation.dead_lettered",
+            description: "Messages routed to a dead-letter destination");
+
         _processingDuration = meter.CreateHistogram<double>(
             "messaging.validation.duration",
             unit: "ms",
@@ -59,6 +64,9 @@ public sealed class MessageValidationMetrics
 
     internal void RecordUnmapped(string source) =>
         _unmappedSources.Add(1, new KeyValuePair<string, object?>("source", source));
+
+    internal void RecordDeadLettered(string source) =>
+        _deadLettered.Add(1, new KeyValuePair<string, object?>("source", source));
 
     internal void RecordDuration(string source, double ms) =>
         _processingDuration.Record(ms, new KeyValuePair<string, object?>("source", source));

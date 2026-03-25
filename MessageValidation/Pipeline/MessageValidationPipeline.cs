@@ -85,12 +85,35 @@ public sealed class MessageValidationPipeline(
                 return;
 
             case FailureBehavior.DeadLetter:
-                logger.LogWarning("Dead-lettering message from {Source}: {Errors}",
+                var destination = $"{options.DeadLetterPrefix}{context.Source}";
+                logger.LogWarning("Dead-lettering message from {Source} to {Destination}: {Errors}",
                     context.Source,
+                    destination,
                     string.Join("; ", result.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}")));
-                var deadLetterHandler = sp.GetService<IValidationFailureHandler>();
-                if (deadLetterHandler is not null)
-                    await deadLetterHandler.HandleAsync(result, context, ct);
+
+                metrics.RecordDeadLettered(context.Source);
+
+                var dlContext = new DeadLetterContext
+                {
+                    Destination = destination,
+                    OriginalContext = context,
+                    ValidationResult = result
+                };
+
+                var dlHandler = sp.GetService<IDeadLetterHandler>();
+                if (dlHandler is not null)
+                {
+                    await dlHandler.HandleAsync(dlContext, ct);
+                }
+                else
+                {
+                    // Backward-compatible fallback to IValidationFailureHandler
+                    var fallbackHandler = sp.GetService<IValidationFailureHandler>();
+                    if (fallbackHandler is not null)
+                        await fallbackHandler.HandleAsync(result, context, ct);
+                    else
+                        logger.LogWarning("No IDeadLetterHandler or IValidationFailureHandler registered. Dead-letter message from {Source} was not forwarded.", context.Source);
+                }
                 return;
 
             case FailureBehavior.Custom:

@@ -224,7 +224,7 @@ public class MessageValidationPipelineTests
     }
 
     [Fact]
-    public async Task ProcessAsync_DeadLetterBehavior_InvokesFailureHandler()
+    public async Task ProcessAsync_DeadLetterBehavior_FallsBackToFailureHandler()
     {
         var failureHandler = Substitute.For<IValidationFailureHandler>();
 
@@ -255,5 +255,141 @@ public class MessageValidationPipelineTests
             Arg.Any<MessageValidationResult>(),
             Arg.Any<MessageContext>(),
             Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task ProcessAsync_DeadLetterBehavior_InvokesDeadLetterHandler()
+    {
+        var dlHandler = Substitute.For<IDeadLetterHandler>();
+
+        await using var sp = BuildProvider(
+            o =>
+            {
+                o.MapSource<TestMessage>("test/topic");
+                o.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+            },
+            s =>
+            {
+                s.AddScoped(_ =>
+                {
+                    var validator = Substitute.For<IMessageValidator<TestMessage>>();
+                    validator.ValidateAsync(Arg.Any<TestMessage>(), Arg.Any<CancellationToken>())
+                        .Returns(MessageValidationResult.Failure([new MessageValidationError("Name", "Required")]));
+                    return validator;
+                });
+                s.AddScoped(_ => dlHandler);
+            });
+
+        var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+        var context = TestHelpers.CreateContext("test/topic", new TestMessage { Name = "" });
+
+        await pipeline.ProcessAsync(context);
+
+        await dlHandler.Received(1).HandleAsync(
+            Arg.Is<DeadLetterContext>(ctx =>
+                ctx.Destination == "$dead-letter/test/topic" &&
+                ctx.OriginalContext == context &&
+                !ctx.ValidationResult.IsValid),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task ProcessAsync_DeadLetterBehavior_UsesCustomPrefix()
+    {
+        var dlHandler = Substitute.For<IDeadLetterHandler>();
+
+        await using var sp = BuildProvider(
+            o =>
+            {
+                o.MapSource<TestMessage>("test/topic");
+                o.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+                o.DeadLetterPrefix = "dlq/";
+            },
+            s =>
+            {
+                s.AddScoped(_ =>
+                {
+                    var validator = Substitute.For<IMessageValidator<TestMessage>>();
+                    validator.ValidateAsync(Arg.Any<TestMessage>(), Arg.Any<CancellationToken>())
+                        .Returns(MessageValidationResult.Failure([new MessageValidationError("Name", "Required")]));
+                    return validator;
+                });
+                s.AddScoped(_ => dlHandler);
+            });
+
+        var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+        var context = TestHelpers.CreateContext("test/topic", new TestMessage { Name = "" });
+
+        await pipeline.ProcessAsync(context);
+
+        await dlHandler.Received(1).HandleAsync(
+            Arg.Is<DeadLetterContext>(ctx => ctx.Destination == "dlq/test/topic"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task ProcessAsync_DeadLetterBehavior_PrefersDeadLetterHandlerOverFailureHandler()
+    {
+        var dlHandler = Substitute.For<IDeadLetterHandler>();
+        var failureHandler = Substitute.For<IValidationFailureHandler>();
+
+        await using var sp = BuildProvider(
+            o =>
+            {
+                o.MapSource<TestMessage>("test/topic");
+                o.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+            },
+            s =>
+            {
+                s.AddScoped(_ =>
+                {
+                    var validator = Substitute.For<IMessageValidator<TestMessage>>();
+                    validator.ValidateAsync(Arg.Any<TestMessage>(), Arg.Any<CancellationToken>())
+                        .Returns(MessageValidationResult.Failure([new MessageValidationError("Name", "Required")]));
+                    return validator;
+                });
+                s.AddScoped(_ => dlHandler);
+                s.AddScoped(_ => failureHandler);
+            });
+
+        var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+        var context = TestHelpers.CreateContext("test/topic", new TestMessage { Name = "" });
+
+        await pipeline.ProcessAsync(context);
+
+        await dlHandler.Received(1).HandleAsync(
+            Arg.Any<DeadLetterContext>(),
+            Arg.Any<CancellationToken>());
+
+        await failureHandler.DidNotReceive().HandleAsync(
+            Arg.Any<MessageValidationResult>(),
+            Arg.Any<MessageContext>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task ProcessAsync_DeadLetterBehavior_NoHandlerRegistered_DoesNotThrow()
+    {
+        await using var sp = BuildProvider(
+            o =>
+            {
+                o.MapSource<TestMessage>("test/topic");
+                o.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+            },
+            s =>
+            {
+                s.AddScoped(_ =>
+                {
+                    var validator = Substitute.For<IMessageValidator<TestMessage>>();
+                    validator.ValidateAsync(Arg.Any<TestMessage>(), Arg.Any<CancellationToken>())
+                        .Returns(MessageValidationResult.Failure([new MessageValidationError("Name", "Required")]));
+                    return validator;
+                });
+            });
+
+        var pipeline = sp.GetRequiredService<MessageValidationPipeline>();
+        var context = TestHelpers.CreateContext("test/topic", new TestMessage { Name = "" });
+
+        await pipeline.ProcessAsync(context);
     }
 }

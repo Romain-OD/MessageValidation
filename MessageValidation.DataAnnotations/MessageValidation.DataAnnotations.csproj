@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.DataAnnotations</PackageId>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>DataAnnotations adapter for MessageValidation — validate messages using System.ComponentModel.DataAnnotations attributes in the MessageValidation pipeline.</Description>
     <PackageTags>messaging;validation;dataannotations;pipeline</PackageTags>

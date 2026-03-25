@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation</PackageId>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>Protocol-agnostic message validation pipeline for .NET — validate messages from MQTT, RabbitMQ, Kafka, and more with DI integration, dead-letter support, and pluggable validation adapters.</Description>
     <PackageTags>messaging;validation;mqtt;rabbitmq;kafka;pipeline</PackageTags>
