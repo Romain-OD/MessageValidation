@@ -20,8 +20,6 @@ The core has **zero opinion** on which messaging library or validation framework
 dotnet add package MessageValidation
 ```
 
-> **Note:** This package is currently in preview (`0.1.0-preview.1`) and targets .NET 10.
-
 ## Quick Start
 
 ### 1. Define your message
@@ -178,6 +176,8 @@ MessageValidation-Project/
 │   ├── Configuration/
 │   │   ├── FailureBehavior.cs                    Log | DeadLetter | Skip | Throw | Custom
 │   │   └── MessageValidationOptions.cs           Source-to-type mapping + wildcards
+│   ├── Diagnostics/
+│   │   └── MessageValidationMetrics.cs           System.Diagnostics.Metrics counters
 │   ├── Models/
 │   │   ├── MessageContext.cs                     Protocol-agnostic envelope
 │   │   ├── MessageValidationResult.cs            Validation outcome
@@ -188,7 +188,12 @@ MessageValidation-Project/
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMessageValidation(), AddMessageHandler<,>()
 │
-├── MessageValidation.FluentValidation/         ← Validation adapter
+├── MessageValidation.DataAnnotations/          ← Validation adapter (DataAnnotations)
+│   ├── DataAnnotationsMessageValidator.cs        Bridges DataAnnotations → IMessageValidator<T>
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddMessageDataAnnotationsValidation()
+│
+├── MessageValidation.FluentValidation/         ← Validation adapter (FluentValidation)
 │   ├── FluentValidationMessageValidator.cs       Bridges IValidator<T> → IMessageValidator<T>
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMessageFluentValidation()
@@ -198,6 +203,9 @@ MessageValidation-Project/
 │   ├── MqttServerExtensions.cs                   MqttServer.UseMessageValidation()
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMqttNetMessageValidation()
+│
+├── examples/
+│   └── MessageValidation.Example/              ← Runnable console demo
 │
 └── README.md
 ```
@@ -232,8 +240,8 @@ flowchart LR
 ## Roadmap
 
 - **v0.1** — Core pipeline, abstractions, DI integration, wildcard matching, FluentValidation adapter, MQTTnet transport adapter
-- **v0.5** — DataAnnotations adapter, dead-letter support, metrics
-- **v1.0** — RabbitMQ & Kafka adapters, `System.Diagnostics.Metrics` observability, source generators for AOT
+- **v0.2** — DataAnnotations adapter, dead-letter support, `System.Diagnostics.Metrics` observability
+- **v1.0** — RabbitMQ & Kafka adapters, source generators for AOT
 - **v2.0** — Middleware-style pipeline (`Use`, `Map`), Azure Service Bus adapter
 
 ## Requirements
