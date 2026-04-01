@@ -8,8 +8,8 @@
     <PackageId>MessageValidation.MqttNet</PackageId>
     <Version>1.0.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>MQTTnet transport adapter for MessageValidation — automatically feed MQTTnet messages into the MessageValidation pipeline.</Description>
-    <PackageTags>messaging;validation;mqtt;mqttnet;iot;pipeline</PackageTags>
+    <Description>MQTTnet transport adapter for the MessageValidation pipeline — hook IMqttClient or MqttServer into the pipeline so every MQTT publish is automatically deserialized, validated, and dispatched. Supports QoS, retain, and topic wildcards.</Description>
+    <PackageTags>messaging;validation;message-validation;mqtt;mqttnet;iot;pipeline;consumer;middleware;telemetry;sensors;smart-home;edge;dotnet;event-driven</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>

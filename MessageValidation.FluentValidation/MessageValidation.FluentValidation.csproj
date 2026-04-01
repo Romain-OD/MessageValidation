@@ -8,8 +8,8 @@
     <PackageId>MessageValidation.FluentValidation</PackageId>
     <Version>1.0.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>FluentValidation adapter for MessageValidation — automatically bridge FluentValidation validators into the MessageValidation pipeline.</Description>
-    <PackageTags>messaging;validation;fluentvalidation;pipeline</PackageTags>
+    <Description>FluentValidation adapter for the MessageValidation pipeline — automatically bridge FluentValidation AbstractValidator&lt;T&gt; rules into IMessageValidator&lt;T&gt; with assembly scanning and scoped DI lifetime.</Description>
+    <PackageTags>messaging;validation;message-validation;fluentvalidation;fluent-validation;pipeline;rules;dotnet;middleware;validator;consumer;microservices</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>

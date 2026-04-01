@@ -4,7 +4,14 @@ namespace MessageValidation;
 
 /// <summary>
 /// Exposes pipeline observability metrics via <see cref="System.Diagnostics.Metrics"/>.
+/// Tracks messages processed, succeeded, failed, unmapped, dead-lettered, and processing duration.
 /// </summary>
+/// <remarks>
+/// Registered automatically by <see cref="ServiceCollectionExtensions.AddMessageValidation"/>.
+/// All counters and histograms are published under the <see cref="MeterName"/> meter
+/// and tagged by message source, making them compatible with OpenTelemetry, Prometheus,
+/// Azure Monitor, and other metric backends.
+/// </remarks>
 public sealed class MessageValidationMetrics
 {
     /// <summary>

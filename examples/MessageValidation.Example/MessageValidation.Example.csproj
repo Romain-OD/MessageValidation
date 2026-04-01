@@ -9,12 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MessageValidation.FluentValidation\MessageValidation.FluentValidation.csproj" />
-    <ProjectReference Include="..\..\MessageValidation.MqttNet\MessageValidation.MqttNet.csproj" />
-    <ProjectReference Include="..\..\MessageValidation\MessageValidation.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="MessageValidation" Version="1.0.0" />
+    <PackageReference Include="MessageValidation.DataAnnotations" Version="1.0.0" />
+    <PackageReference Include="MessageValidation.FluentValidation" Version="1.0.0" />
+    <PackageReference Include="MessageValidation.Kafka" Version="1.0.0" />
+    <PackageReference Include="MessageValidation.MqttNet" Version="1.0.0" />
+    <PackageReference Include="MessageValidation.RabbitMQ" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.5" />
   </ItemGroup>
 

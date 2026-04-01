@@ -5,13 +5,36 @@ using Microsoft.Extensions.Logging;
 namespace MessageValidation;
 
 /// <summary>
-/// Extension methods for registering MessageValidation services.
+/// Extension methods for registering the <c>MessageValidation</c> pipeline and
+/// its components (<see cref="IMessageDeserializer"/>, <see cref="IMessageValidator{TMessage}"/>,
+/// <see cref="IMessageHandler{TMessage}"/>, <see cref="IDeadLetterHandler"/>, and
+/// <see cref="IValidationFailureHandler"/>) into a <see cref="IServiceCollection"/>.
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Adds the core message validation pipeline and configures source-to-type mappings.
+    /// Adds the core <see cref="IMessageValidationPipeline"/> and configures
+    /// source-to-type mappings via <see cref="MessageValidationOptions"/>.
+    /// Call this once, then register a deserializer, validators, and handlers.
     /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configure">
+    /// Callback to configure <see cref="MessageValidationOptions"/>, including
+    /// <see cref="MessageValidationOptions.MapSource{TMessage}"/> mappings and
+    /// <see cref="MessageValidationOptions.DefaultFailureBehavior"/>.
+    /// </param>
+    /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
+    /// <example>
+    /// <code>
+    /// services.AddMessageValidation(options =&gt;
+    /// {
+    ///     options.MapSource&lt;TemperatureReading&gt;("sensors/+/temperature");
+    ///     options.DefaultFailureBehavior = FailureBehavior.DeadLetter;
+    /// });
+    /// services.AddMessageDeserializer&lt;JsonMessageDeserializer&gt;();
+    /// services.AddMessageHandler&lt;TemperatureReading, TemperatureHandler&gt;();
+    /// </code>
+    /// </example>
     public static IServiceCollection AddMessageValidation(
         this IServiceCollection services,
         Action<MessageValidationOptions> configure)
@@ -30,8 +53,13 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers a message handler for a specific message type.
+    /// Registers a message handler that is invoked after successful validation
+    /// for messages of type <typeparamref name="TMessage"/>.
     /// </summary>
+    /// <typeparam name="TMessage">The deserialized message type.</typeparam>
+    /// <typeparam name="THandler">The handler implementation type.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddMessageHandler<TMessage, THandler>(
         this IServiceCollection services)
         where TMessage : class
@@ -42,8 +70,12 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers a custom validation failure handler.
+    /// Registers a custom validation failure handler invoked when
+    /// <see cref="FailureBehavior.Custom"/> is configured and a message fails validation.
     /// </summary>
+    /// <typeparam name="THandler">The failure handler implementation type.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddValidationFailureHandler<THandler>(
         this IServiceCollection services)
         where THandler : class, IValidationFailureHandler
@@ -65,8 +97,12 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers a custom message deserializer.
+    /// Registers the <see cref="IMessageDeserializer"/> implementation used by the pipeline
+    /// to convert raw payload bytes into typed message objects.
     /// </summary>
+    /// <typeparam name="TDeserializer">The deserializer implementation type (e.g., a JSON or Protobuf deserializer).</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddMessageDeserializer<TDeserializer>(
         this IServiceCollection services)
         where TDeserializer : class, IMessageDeserializer

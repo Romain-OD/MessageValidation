@@ -7,8 +7,16 @@ using Microsoft.Extensions.Logging;
 namespace MessageValidation;
 
 /// <summary>
-/// Core pipeline that deserializes, validates, and dispatches messages.
+/// Default implementation of <see cref="IMessageValidationPipeline"/>.
+/// Orchestrates deserialization via <see cref="IMessageDeserializer"/>,
+/// validation via <see cref="IMessageValidator{TMessage}"/>,
+/// and dispatch via <see cref="IMessageHandler{TMessage}"/>.
+/// Records pipeline metrics via <see cref="MessageValidationMetrics"/>.
 /// </summary>
+/// <remarks>
+/// Registered automatically by <see cref="ServiceCollectionExtensions.AddMessageValidation"/>.
+/// Do not instantiate directly; resolve <see cref="IMessageValidationPipeline"/> from the DI container.
+/// </remarks>
 public sealed class MessageValidationPipeline(
     IServiceScopeFactory scopeFactory,
     MessageValidationOptions options,
