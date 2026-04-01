@@ -33,6 +33,12 @@ jobs:
       - name: Pack MessageValidation.MqttNet
         run: dotnet pack MessageValidation.MqttNet/MessageValidation.MqttNet.csproj --configuration Release --no-build --output ./nupkgs
 
+      - name: Pack MessageValidation.RabbitMQ
+        run: dotnet pack MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj --configuration Release --no-build --output ./nupkgs
+
+      - name: Pack MessageValidation.Kafka
+        run: dotnet pack MessageValidation.Kafka/MessageValidation.Kafka.csproj --configuration Release --no-build --output ./nupkgs
+
       - name: Pack MessageValidation.DataAnnotations
         run: dotnet pack MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj --configuration Release --no-build --output ./nupkgs
 
