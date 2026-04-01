@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using MQTTnet.Client;
+using MQTTnet;
 
 namespace MessageValidation.MqttNet;
 
@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton(sp =>
         {
-            var factory = new MQTTnet.MqttFactory();
+            var factory = new MQTTnet.MqttClientFactory();
             var client = factory.CreateMqttClient();
             var pipeline = sp.GetRequiredService<IMessageValidationPipeline>();
 

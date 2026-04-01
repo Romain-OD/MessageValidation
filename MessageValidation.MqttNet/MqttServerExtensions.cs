@@ -25,7 +25,7 @@ public static class MqttServerExtensions
             var context = new MessageContext
             {
                 Source = e.ApplicationMessage.Topic,
-                RawPayload = e.ApplicationMessage.PayloadSegment.ToArray(),
+                RawPayload = System.Buffers.BuffersExtensions.ToArray(e.ApplicationMessage.Payload),
                 Metadata = new Dictionary<string, object>
                 {
                     ["mqtt.qos"] = e.ApplicationMessage.QualityOfServiceLevel,

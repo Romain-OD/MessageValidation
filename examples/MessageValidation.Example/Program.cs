@@ -5,6 +5,7 @@ using MessageValidation.FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+
 // ─── Build the DI container ────────────────────────────────────────────
 var services = new ServiceCollection();
 

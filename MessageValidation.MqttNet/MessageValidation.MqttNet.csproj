@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.MqttNet</PackageId>
-    <Version>0.3.0</Version>
+    <Version>0.4.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>MQTTnet transport adapter for MessageValidation — automatically feed MQTTnet messages into the MessageValidation pipeline.</Description>
     <PackageTags>messaging;validation;mqtt;mqttnet;iot;pipeline</PackageTags>
@@ -24,7 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MQTTnet" Version="4.*" />
+    <PackageReference Include="MQTTnet" Version="5.1.0.1559" />
+    <PackageReference Include="MQTTnet.Server" Version="5.1.0.1559" />
   </ItemGroup>
 
   <ItemGroup>

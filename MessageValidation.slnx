@@ -12,6 +12,8 @@
   <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />
   <Project Path="MessageValidation.MqttNet.Tests/MessageValidation.MqttNet.Tests.csproj" />
   <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
+  <Project Path="MessageValidation.RabbitMQ.Tests/MessageValidation.RabbitMQ.Tests.csproj" Id="82f42638-ba6d-4418-a022-67e330eda183" />
+  <Project Path="MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj" Id="3f1e8ce4-f977-4214-8347-850660323e91" />
   <Project Path="MessageValidation.Tests/MessageValidation.Tests.csproj" />
   <Project Path="MessageValidation/MessageValidation.csproj" />
 </Solution>
