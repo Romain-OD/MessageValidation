@@ -5,11 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
-    <PackageId>MessageValidation.FluentValidation</PackageId>
+    <PackageId>MessageValidation.Kafka</PackageId>
     <Version>1.0.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>FluentValidation adapter for MessageValidation — automatically bridge FluentValidation validators into the MessageValidation pipeline.</Description>
-    <PackageTags>messaging;validation;fluentvalidation;pipeline</PackageTags>
+    <Description>Confluent Kafka transport adapter for MessageValidation — automatically feed Kafka messages into the MessageValidation pipeline.</Description>
+    <PackageTags>messaging;validation;kafka;confluent;pipeline</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
@@ -24,9 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.1.1" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
+    <PackageReference Include="Confluent.Kafka" Version="2.13.2" />
   </ItemGroup>
 
   <ItemGroup>

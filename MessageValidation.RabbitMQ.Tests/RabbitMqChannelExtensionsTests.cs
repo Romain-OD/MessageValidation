@@ -15,7 +15,11 @@ public class RabbitMqChannelExtensionsTests
         channel.BasicConsumeAsync(
             Arg.Any<string>(),
             Arg.Any<bool>(),
-            Arg.Any<AsyncEventingBasicConsumer>(),
+            Arg.Any<string>(),
+            Arg.Any<bool>(),
+            Arg.Any<bool>(),
+            Arg.Any<IDictionary<string, object>>(),
+            Arg.Any<IAsyncBasicConsumer>(),
             Arg.Any<CancellationToken>())
             .Returns("test-consumer-tag");
 
@@ -33,16 +37,24 @@ public class RabbitMqChannelExtensionsTests
         channel.BasicConsumeAsync(
             Arg.Any<string>(),
             Arg.Any<bool>(),
-            Arg.Any<AsyncEventingBasicConsumer>(),
+            Arg.Any<string>(),
+            Arg.Any<bool>(),
+            Arg.Any<bool>(),
+            Arg.Any<IDictionary<string, object>>(),
+            Arg.Any<IAsyncBasicConsumer>(),
             Arg.Any<CancellationToken>())
             .Returns("tag");
 
         await channel.UseMessageValidation(pipeline, "test-queue", autoAck: false);
 
         await channel.Received(1).BasicConsumeAsync(
-            "test-queue",
-            false,
-            Arg.Any<AsyncEventingBasicConsumer>(),
+            Arg.Is<string>("test-queue"),
+            Arg.Is<bool>(false),
+            Arg.Any<string>(),
+            Arg.Any<bool>(),
+            Arg.Any<bool>(),
+            Arg.Any<IDictionary<string, object>>(),
+            Arg.Any<IAsyncBasicConsumer>(),
             Arg.Any<CancellationToken>());
     }
 }
