@@ -39,6 +39,9 @@ jobs:
       - name: Pack MessageValidation.Kafka
         run: dotnet pack MessageValidation.Kafka/MessageValidation.Kafka.csproj --configuration Release --no-build --output ./nupkgs
 
+      - name: Pack MessageValidation.AzureServiceBus
+        run: dotnet pack MessageValidation.AzureServiceBus/MessageValidation.AzureServiceBus.csproj --configuration Release --no-build --output ./nupkgs
+
       - name: Pack MessageValidation.DataAnnotations
         run: dotnet pack MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj --configuration Release --no-build --output ./nupkgs
 
