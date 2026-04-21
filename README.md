@@ -235,11 +235,26 @@ MessageValidation-Project/
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMessageFluentValidation()
 │
-├── MessageValidation.MqttNet/                  ← Transport adapter
+├── MessageValidation.MqttNet/                  ← Transport adapter (MQTTnet)
 │   ├── MqttClientExtensions.cs                   IMqttClient.UseMessageValidation()
 │   ├── MqttServerExtensions.cs                   MqttServer.UseMessageValidation()
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMqttNetMessageValidation()
+│
+├── MessageValidation.RabbitMQ/                 ← Transport adapter (RabbitMQ.Client)
+│   ├── RabbitMqChannelExtensions.cs              IChannel.UseMessageValidation()
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddRabbitMqMessageValidation()
+│
+├── MessageValidation.Kafka/                    ← Transport adapter (Confluent.Kafka)
+│   ├── KafkaConsumerExtensions.cs                IConsumer<string, byte[]>.StartConsuming()
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddKafkaMessageValidation()
+│
+├── MessageValidation.AzureServiceBus/          ← Transport adapter (Azure.Messaging.ServiceBus)
+│   ├── ServiceBusProcessorExtensions.cs          ServiceBusProcessor.UseMessageValidation()
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddAzureServiceBusMessageValidation()
 │
 ├── examples/
 │   └── MessageValidation.Example/              ← Runnable console demo
@@ -273,8 +288,10 @@ flowchart LR
 | `MessageValidation.FluentValidation` | FluentValidation adapter | ✅ Available | [README](MessageValidation.FluentValidation/README.md) |
 | `MessageValidation.MqttNet` | MQTTnet transport hook | ✅ Available | [README](MessageValidation.MqttNet/README.md) |
 | `MessageValidation.DataAnnotations` | DataAnnotations adapter | ✅ Available | [README](MessageValidation.DataAnnotations/README.md) |
-| `MessageValidation.RabbitMQ` | RabbitMQ transport hook | 🔜 Planned | — |
-| `MessageValidation.Kafka` | Kafka transport hook | 🔜 Planned | — |
+| `MessageValidation.RabbitMQ` | RabbitMQ transport hook | ✅ Available | [README](MessageValidation.RabbitMQ/README.md) |
+| `MessageValidation.Kafka` | Kafka transport hook (Confluent) | ✅ Available | [README](MessageValidation.Kafka/README.md) |
+| `MessageValidation.AzureServiceBus` | Azure Service Bus transport hook | ✅ Available | [README](MessageValidation.AzureServiceBus/README.md) |
+| `MessageValidation.Nats` | NATS transport hook | 🔜 Planned | — |
 
 ## Roadmap
 
@@ -282,7 +299,8 @@ flowchart LR
 - **v0.2** — DataAnnotations adapter, `System.Diagnostics.Metrics` observability
 - **v0.3** — Dead-letter queue support (`IDeadLetterHandler`, `DeadLetterContext`, dead-letter metrics, backward-compatible fallback)
 - **v1.0** — RabbitMQ & Kafka adapters, source generators for AOT
-- **v2.0** — Middleware-style pipeline (`Use`, `Map`), Azure Service Bus adapter
+- **v1.1** — Azure Service Bus adapter (`ServiceBusProcessor` / `ServiceBusSessionProcessor`, passwordless auth)
+- **v2.0** — Middleware-style pipeline (`Use`, `Map`), NATS adapter
 
 ## Requirements
 

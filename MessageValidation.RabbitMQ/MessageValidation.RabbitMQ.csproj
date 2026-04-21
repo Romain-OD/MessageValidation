@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.RabbitMQ</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>RabbitMQ transport adapter for the MessageValidation pipeline — automatically deserialize, validate, and dispatch RabbitMQ messages using IChannel.UseMessageValidation(). Supports auto-ack, routing keys, and full header metadata.</Description>
     <PackageTags>messaging;validation;message-validation;rabbitmq;amqp;pipeline;consumer;middleware;microservices;event-driven;dotnet;dead-letter;queue</PackageTags>
