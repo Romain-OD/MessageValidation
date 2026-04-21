@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.Kafka</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>Confluent Kafka transport adapter for the MessageValidation pipeline — subscribe to Kafka topics and automatically deserialize, validate, and dispatch consumed messages. Includes partition, offset, and key metadata.</Description>
     <PackageTags>messaging;validation;message-validation;kafka;confluent;confluent-kafka;pipeline;consumer;middleware;microservices;event-driven;streaming;dotnet</PackageTags>

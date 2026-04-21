@@ -256,6 +256,13 @@ MessageValidation-Project/
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddAzureServiceBusMessageValidation()
 │
+├── MessageValidation.AzureEventHubs/           ← Transport adapter (Azure.Messaging.EventHubs)
+│   ├── EventProcessorClientExtensions.cs         EventProcessorClient.UseMessageValidation()
+│   ├── EventHubConsumerClientExtensions.cs       EventHubConsumerClient.StartConsuming()
+│   ├── EventDataContextFactory.cs                EventData → MessageContext
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddAzureEventHubsMessageValidation()
+│
 ├── examples/
 │   └── MessageValidation.Example/              ← Runnable console demo
 │
@@ -291,6 +298,7 @@ flowchart LR
 | `MessageValidation.RabbitMQ` | RabbitMQ transport hook | ✅ Available | [README](MessageValidation.RabbitMQ/README.md) |
 | `MessageValidation.Kafka` | Kafka transport hook (Confluent) | ✅ Available | [README](MessageValidation.Kafka/README.md) |
 | `MessageValidation.AzureServiceBus` | Azure Service Bus transport hook | ✅ Available | [README](MessageValidation.AzureServiceBus/README.md) |
+| `MessageValidation.AzureEventHubs` | Azure Event Hubs transport hook | ✅ Available | [README](MessageValidation.AzureEventHubs/README.md) |
 | `MessageValidation.Nats` | NATS transport hook | 🔜 Planned | — |
 
 ## Roadmap
@@ -298,8 +306,9 @@ flowchart LR
 - **v0.1** — Core pipeline, abstractions, DI integration, wildcard matching, FluentValidation adapter, MQTTnet transport adapter
 - **v0.2** — DataAnnotations adapter, `System.Diagnostics.Metrics` observability
 - **v0.3** — Dead-letter queue support (`IDeadLetterHandler`, `DeadLetterContext`, dead-letter metrics, backward-compatible fallback)
-- **v1.0** — RabbitMQ & Kafka adapters, source generators for AOT
+- **v1.0** — RabbitMQ & Kafka adapters
 - **v1.1** — Azure Service Bus adapter (`ServiceBusProcessor` / `ServiceBusSessionProcessor`, passwordless auth)
+- **v1.2** — Azure Event Hubs adapter (`EventProcessorClient` / `EventHubConsumerClient`, passwordless auth)
 - **v2.0** — Middleware-style pipeline (`Use`, `Map`), NATS adapter
 
 ## Requirements

@@ -6,8 +6,14 @@
     <File Path="MessageValidation-logo.png" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="MessageValidation.AzureServiceBus.Tests/MessageValidation.AzureServiceBus.Tests.csproj" />
-  <Project Path="MessageValidation.AzureServiceBus/MessageValidation.AzureServiceBus.csproj" />
+  <Project Path="MessageValidation.AzureEventHubs.Tests/MessageValidation.AzureEventHubs.Tests.csproj" Id="faa4a07c-f6e8-496c-a8ad-7aeababf3308" />
+  <Project Path="MessageValidation.AzureEventHubs/MessageValidation.AzureEventHubs.csproj" Id="58def00a-4c2a-4e6d-b79d-280c983ce8db" />
+  <Project Path="MessageValidation.AzureServiceBus.Tests/MessageValidation.AzureServiceBus.Tests.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="MessageValidation.AzureServiceBus/MessageValidation.AzureServiceBus.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="MessageValidation.DataAnnotations.Tests/MessageValidation.DataAnnotations.Tests.csproj" />
   <Project Path="MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj" Id="b566e81c-5728-4a53-9908-348a6907f810" />
   <Project Path="MessageValidation.FluentValidation.Tests/MessageValidation.FluentValidation.Tests.csproj" />

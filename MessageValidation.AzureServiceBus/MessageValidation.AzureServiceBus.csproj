@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.AzureServiceBus</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>Azure Service Bus transport adapter for the MessageValidation pipeline — wire a ServiceBusProcessor (or ServiceBusSessionProcessor) into the pipeline so every received message is automatically deserialized, validated, and dispatched. Includes Subject routing, session support, and full message metadata.</Description>
     <PackageTags>messaging;validation;message-validation;azure;azure-service-bus;servicebus;pipeline;consumer;middleware;microservices;event-driven;dotnet;dead-letter;queue;topic</PackageTags>

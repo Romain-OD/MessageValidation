@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.FluentValidation</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>FluentValidation adapter for the MessageValidation pipeline — automatically bridge FluentValidation AbstractValidator&lt;T&gt; rules into IMessageValidator&lt;T&gt; with assembly scanning and scoped DI lifetime.</Description>
     <PackageTags>messaging;validation;message-validation;fluentvalidation;fluent-validation;pipeline;rules;dotnet;middleware;validator;consumer;microservices</PackageTags>
