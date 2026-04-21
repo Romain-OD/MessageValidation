@@ -15,6 +15,7 @@ public class EventDataContextFactoryTests
         string contentType = "application/json",
         IDictionary<string, object>? properties = null)
     {
+#pragma warning disable CS0618 // long-offset overload is obsolete but the newer overload is not yet available in all SDK patch versions
         return EventHubsModelFactory.EventData(
             eventBody: new BinaryData(body ?? """{"SensorId":"room1","Value":22.5}"""u8.ToArray()),
             properties: properties ?? new Dictionary<string, object> { ["MessageType"] = "Telemetry" },
@@ -22,6 +23,7 @@ public class EventDataContextFactoryTests
             sequenceNumber: sequenceNumber,
             offset: offset,
             enqueuedTime: new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero));
+#pragma warning restore CS0618
     }
 
     [Fact]
