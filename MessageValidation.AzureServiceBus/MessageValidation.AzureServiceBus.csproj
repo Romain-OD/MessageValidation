@@ -5,11 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
-    <PackageId>MessageValidation.Kafka</PackageId>
+    <PackageId>MessageValidation.AzureServiceBus</PackageId>
     <Version>1.1.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>Confluent Kafka transport adapter for the MessageValidation pipeline — subscribe to Kafka topics and automatically deserialize, validate, and dispatch consumed messages. Includes partition, offset, and key metadata.</Description>
-    <PackageTags>messaging;validation;message-validation;kafka;confluent;confluent-kafka;pipeline;consumer;middleware;microservices;event-driven;streaming;dotnet</PackageTags>
+    <Description>Azure Service Bus transport adapter for the MessageValidation pipeline â€” wire a ServiceBusProcessor (or ServiceBusSessionProcessor) into the pipeline so every received message is automatically deserialized, validated, and dispatched. Includes Subject routing, session support, and full message metadata.</Description>
+    <PackageTags>messaging;validation;message-validation;azure;azure-service-bus;servicebus;pipeline;consumer;middleware;microservices;event-driven;dotnet;dead-letter;queue;topic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
@@ -24,7 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="2.13.2" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.20.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>

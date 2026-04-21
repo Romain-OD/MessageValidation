@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.DataAnnotations</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>DataAnnotations validation adapter for the MessageValidation pipeline — automatically validate messages using System.ComponentModel.DataAnnotations attributes ([Required], [Range], [StringLength], etc.) with zero custom validator code.</Description>
+    <Description>DataAnnotations validation adapter for the MessageValidation pipeline � automatically validate messages using System.ComponentModel.DataAnnotations attributes ([Required], [Range], [StringLength], etc.) with zero custom validator code.</Description>
     <PackageTags>messaging;validation;message-validation;dataannotations;data-annotations;pipeline;attributes;dotnet;middleware;required;range;consumer</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
