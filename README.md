@@ -220,8 +220,15 @@ MessageValidation-Project/
 │   │   ├── MessageValidationError.cs             Single error record
 │   │   └── DeadLetterContext.cs                  Dead-letter envelope (destination, errors, timestamp)
 │   ├── Pipeline/
-│   │   ├── MessageValidationPipeline.cs          Deserialize → Validate → Dispatch
-│   │   └── MessageValidationException.cs         Thrown on FailureBehavior.ThrowException
+│   │   ├── MessageValidationPipeline.cs          Builds + invokes the middleware chain
+│   │   ├── MessageDelegate.cs                    (ctx, ct) => Task
+│   │   ├── IMessageMiddleware.cs                 Middleware contract
+│   │   ├── IMessagePipelineBuilder.cs            Use / UseMiddleware<T> / Map / Build
+│   │   ├── MessagePipelineBuilder.cs             Default builder implementation
+│   │   ├── MessageValidationException.cs         Thrown on FailureBehavior.ThrowException
+│   │   └── Middleware/                           Built-in stages (Metrics, TypeResolution,
+│   │                                              Deserialization, Validation,
+│   │                                              FailureHandling, HandlerDispatch)
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMessageValidation(), AddMessageHandler<,>(), AddDeadLetterHandler<>()
 │
@@ -287,6 +294,76 @@ flowchart LR
     Validator -->|invalid + DeadLetter| DeadLetter
 ```
 
+## Middleware pipeline (v2.0+)
+
+Starting with v2.0, the pipeline is composed of **middleware** — mirroring the
+ASP.NET Core `IApplicationBuilder` shape. The default stack (metrics →
+type resolution → deserialization → validation → failure handling → handler
+dispatch) is registered automatically, and you can insert your own stages with
+`Use`, `UseMiddleware<T>`, or branch with `Map`.
+
+### Custom inline middleware
+
+```csharp
+services.AddMessageValidation(
+    options =>
+    {
+        options.MapSource<TemperatureReading>("sensors/+/temperature");
+    },
+    pipeline =>
+    {
+        // Log every message before the built-in stages run
+        pipeline.Use(next => async (ctx, ct) =>
+        {
+            Console.WriteLine($"[in] {ctx.Source} ({ctx.RawPayload.Length} bytes)");
+            await next(ctx, ct);
+        });
+
+        MessageValidationPipeline.ConfigureDefaults(pipeline);
+    });
+```
+
+### Strongly-typed middleware
+
+```csharp
+public sealed class CorrelationIdMiddleware(ILogger<CorrelationIdMiddleware> logger)
+    : IMessageMiddleware
+{
+    public async Task InvokeAsync(MessageContext ctx, MessageDelegate next, CancellationToken ct)
+    {
+        ctx.Items["CorrelationId"] = Guid.NewGuid().ToString("N");
+        using (logger.BeginScope("CID:{Cid}", ctx.Items["CorrelationId"]))
+            await next(ctx, ct);
+    }
+}
+
+services.AddMessageValidation(
+    options => options.MapSource<TemperatureReading>("sensors/+/temperature"),
+    pipeline =>
+    {
+        pipeline.UseMiddleware<CorrelationIdMiddleware>();
+        MessageValidationPipeline.ConfigureDefaults(pipeline);
+    });
+```
+
+### Branching with `Map`
+
+```csharp
+pipeline.Map(
+    ctx => ctx.Source.StartsWith("audit/"),
+    auditBranch =>
+    {
+        auditBranch.UseMiddleware<AuditLoggingMiddleware>();
+        MessageValidationPipeline.ConfigureDefaults(auditBranch);
+    });
+
+// Non-"audit/..." messages fall through to the outer pipeline
+MessageValidationPipeline.ConfigureDefaults(pipeline);
+```
+
+`Map` executes the branch and **skips the remainder of the outer pipeline**
+when the predicate returns `true`, just like `IApplicationBuilder.Map`.
+
 ## Adapter Packages
 
 | Package | Role | Status | Docs |
@@ -309,7 +386,7 @@ flowchart LR
 - **v1.0** — RabbitMQ & Kafka adapters
 - **v1.1** — Azure Service Bus adapter (`ServiceBusProcessor` / `ServiceBusSessionProcessor`, passwordless auth)
 - **v1.2** — Azure Event Hubs adapter (`EventProcessorClient` / `EventHubConsumerClient`, passwordless auth)
-- **v2.0** — Middleware-style pipeline (`Use`, `Map`), NATS adapter
+- **v2.0** — Middleware-style pipeline (`Use`, `Map`, `IMessageMiddleware`), NATS adapter ✅
 
 ## Requirements
 
