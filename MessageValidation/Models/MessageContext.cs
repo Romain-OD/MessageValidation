@@ -32,4 +32,33 @@ public sealed class MessageContext
     /// Populated by the transport adapter; available in handlers and failure handlers.
     /// </summary>
     public IDictionary<string, object> Metadata { get; init; } = new Dictionary<string, object>();
+
+    /// <summary>
+    /// The CLR type resolved from <see cref="Source"/>. Populated by the type-resolution
+    /// middleware and consumed by subsequent middleware (deserialization, validation,
+    /// dispatch).
+    /// </summary>
+    public Type? MessageType { get; set; }
+
+    /// <summary>
+    /// The deserialized message instance. Populated by the deserialization middleware.
+    /// </summary>
+    public object? Message { get; set; }
+
+    /// <summary>
+    /// The outcome of the most recent validation step, or <see langword="null"/> when
+    /// validation has not yet run or no validator is registered for <see cref="MessageType"/>.
+    /// </summary>
+    public MessageValidationResult? ValidationResult { get; set; }
+
+    /// <summary>
+    /// The per-message (scoped) <see cref="IServiceProvider"/>. Populated by
+    /// <see cref="IMessageValidationPipeline"/> before dispatching to middleware.
+    /// </summary>
+    public IServiceProvider? Services { get; set; }
+
+    /// <summary>
+    /// Extensibility bag for custom middleware to share state across the pipeline.
+    /// </summary>
+    public IDictionary<string, object?> Items { get; } = new Dictionary<string, object?>();
 }
