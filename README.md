@@ -194,6 +194,7 @@ public class MyDeadLetterHandler : IDeadLetterHandler
 | `IMessageDeserializer` | Converts raw bytes to a typed object |
 | `IValidationFailureHandler` | Custom logic when validation fails |
 | `IDeadLetterHandler` | Handles dead-lettered messages (receives `DeadLetterContext`) |
+| `IMessageMiddleware` | Composable pipeline stage (v2.0+) — see [Middleware pipeline](#middleware-pipeline-v20) |
 
 ## Architecture
 
@@ -269,6 +270,11 @@ MessageValidation-Project/
 │   ├── EventDataContextFactory.cs                EventData → MessageContext
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddAzureEventHubsMessageValidation()
+│
+├── MessageValidation.NatsNet/                  ← Transport adapter (NATS.Net)
+│   ├── NatsConnectionExtensions.cs               INatsConnection.SubscribeWithMessageValidationAsync()
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddNatsNetMessageValidation()
 │
 ├── examples/
 │   └── MessageValidation.Example/              ← Runnable console demo
@@ -376,7 +382,7 @@ when the predicate returns `true`, just like `IApplicationBuilder.Map`.
 | `MessageValidation.Kafka` | Kafka transport hook (Confluent) | ✅ Available | [README](MessageValidation.Kafka/README.md) |
 | `MessageValidation.AzureServiceBus` | Azure Service Bus transport hook | ✅ Available | [README](MessageValidation.AzureServiceBus/README.md) |
 | `MessageValidation.AzureEventHubs` | Azure Event Hubs transport hook | ✅ Available | [README](MessageValidation.AzureEventHubs/README.md) |
-| `MessageValidation.Nats` | NATS transport hook | 🔜 Planned | — |
+| `MessageValidation.NatsNet` | NATS transport hook (NATS.Net) | ✅ Available | [README](MessageValidation.NatsNet/README.md) |
 
 ## Roadmap
 
