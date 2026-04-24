@@ -18,6 +18,7 @@
   <Project Path="MessageValidation.Kafka/MessageValidation.Kafka.csproj" Id="b186e3db-81e3-4d66-9e68-a1c2d51e083a" />
   <Project Path="MessageValidation.MqttNet.Tests/MessageValidation.MqttNet.Tests.csproj" />
   <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
+  <Project Path="MessageValidation.NatsNet/MessageValidation.NatsNet.csproj" />
   <Project Path="MessageValidation.RabbitMQ.Tests/MessageValidation.RabbitMQ.Tests.csproj" Id="82f42638-ba6d-4418-a022-67e330eda183" />
   <Project Path="MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj" Id="3f1e8ce4-f977-4214-8347-850660323e91" />
   <Project Path="MessageValidation.Tests/MessageValidation.Tests.csproj" />

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <PackageId>MessageValidation.NatsNet</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Romain-OD</Authors>
+    <Description>NATS.Net transport adapter for the MessageValidation pipeline — subscribe an INatsConnection to one or more subjects and every incoming NATS message is automatically deserialized, validated, and dispatched. Supports wildcards, queue groups, and headers.</Description>
+    <PackageTags>messaging;validation;message-validation;nats;nats-net;pubsub;pipeline;consumer;middleware;dotnet;event-driven;cloud-native</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>MessageValidation-logo.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MessageValidation\MessageValidation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NATS.Net" Version="2.7.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="..\MessageValidation-logo.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

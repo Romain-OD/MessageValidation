@@ -33,6 +33,7 @@ jobs:
           dotnet pack MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.MqttNet/MessageValidation.MqttNet.csproj --configuration Release --no-build --output ./nupkgs
+          dotnet pack MessageValidation.NatsNet/MessageValidation.NatsNet.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.Kafka/MessageValidation.Kafka.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.AzureServiceBus/MessageValidation.AzureServiceBus.csproj --configuration Release --no-build --output ./nupkgs
