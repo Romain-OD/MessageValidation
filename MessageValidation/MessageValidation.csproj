@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation</PackageId>
-    <Version>1.2.0</Version>
+    <Version>2.0.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>Protocol-agnostic message validation pipeline for .NET — deserialize, validate, and dispatch messages from RabbitMQ, Kafka, MQTT, Azure Service Bus, NATS, or any messaging transport. Features DI integration, dead-letter support, pluggable validators (FluentValidation, DataAnnotations), configurable failure handling, and OpenTelemetry-compatible metrics.</Description>
     <PackageTags>messaging;validation;message-validation;pipeline;middleware;rabbitmq;kafka;mqtt;azure-service-bus;nats;dead-letter;consumer;microservices;event-driven;dotnet;dependency-injection;deserialize;iot</PackageTags>

@@ -194,6 +194,7 @@ public class MyDeadLetterHandler : IDeadLetterHandler
 | `IMessageDeserializer` | Converts raw bytes to a typed object |
 | `IValidationFailureHandler` | Custom logic when validation fails |
 | `IDeadLetterHandler` | Handles dead-lettered messages (receives `DeadLetterContext`) |
+| `IMessageMiddleware` | Composable pipeline stage (v2.0+) — see [Middleware pipeline](#middleware-pipeline-v20) |
 
 ## Architecture
 
@@ -220,8 +221,15 @@ MessageValidation-Project/
 │   │   ├── MessageValidationError.cs             Single error record
 │   │   └── DeadLetterContext.cs                  Dead-letter envelope (destination, errors, timestamp)
 │   ├── Pipeline/
-│   │   ├── MessageValidationPipeline.cs          Deserialize → Validate → Dispatch
-│   │   └── MessageValidationException.cs         Thrown on FailureBehavior.ThrowException
+│   │   ├── MessageValidationPipeline.cs          Builds + invokes the middleware chain
+│   │   ├── MessageDelegate.cs                    (ctx, ct) => Task
+│   │   ├── IMessageMiddleware.cs                 Middleware contract
+│   │   ├── IMessagePipelineBuilder.cs            Use / UseMiddleware<T> / Map / Build
+│   │   ├── MessagePipelineBuilder.cs             Default builder implementation
+│   │   ├── MessageValidationException.cs         Thrown on FailureBehavior.ThrowException
+│   │   └── Middleware/                           Built-in stages (Metrics, TypeResolution,
+│   │                                              Deserialization, Validation,
+│   │                                              FailureHandling, HandlerDispatch)
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddMessageValidation(), AddMessageHandler<,>(), AddDeadLetterHandler<>()
 │
@@ -263,6 +271,11 @@ MessageValidation-Project/
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddAzureEventHubsMessageValidation()
 │
+├── MessageValidation.NatsNet/                  ← Transport adapter (NATS.Net)
+│   ├── NatsConnectionExtensions.cs               INatsConnection.SubscribeWithMessageValidationAsync()
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddNatsNetMessageValidation()
+│
 ├── examples/
 │   └── MessageValidation.Example/              ← Runnable console demo
 │
@@ -287,6 +300,76 @@ flowchart LR
     Validator -->|invalid + DeadLetter| DeadLetter
 ```
 
+## Middleware pipeline (v2.0+)
+
+Starting with v2.0, the pipeline is composed of **middleware** — mirroring the
+ASP.NET Core `IApplicationBuilder` shape. The default stack (metrics →
+type resolution → deserialization → validation → failure handling → handler
+dispatch) is registered automatically, and you can insert your own stages with
+`Use`, `UseMiddleware<T>`, or branch with `Map`.
+
+### Custom inline middleware
+
+```csharp
+services.AddMessageValidation(
+    options =>
+    {
+        options.MapSource<TemperatureReading>("sensors/+/temperature");
+    },
+    pipeline =>
+    {
+        // Log every message before the built-in stages run
+        pipeline.Use(next => async (ctx, ct) =>
+        {
+            Console.WriteLine($"[in] {ctx.Source} ({ctx.RawPayload.Length} bytes)");
+            await next(ctx, ct);
+        });
+
+        MessageValidationPipeline.ConfigureDefaults(pipeline);
+    });
+```
+
+### Strongly-typed middleware
+
+```csharp
+public sealed class CorrelationIdMiddleware(ILogger<CorrelationIdMiddleware> logger)
+    : IMessageMiddleware
+{
+    public async Task InvokeAsync(MessageContext ctx, MessageDelegate next, CancellationToken ct)
+    {
+        ctx.Items["CorrelationId"] = Guid.NewGuid().ToString("N");
+        using (logger.BeginScope("CID:{Cid}", ctx.Items["CorrelationId"]))
+            await next(ctx, ct);
+    }
+}
+
+services.AddMessageValidation(
+    options => options.MapSource<TemperatureReading>("sensors/+/temperature"),
+    pipeline =>
+    {
+        pipeline.UseMiddleware<CorrelationIdMiddleware>();
+        MessageValidationPipeline.ConfigureDefaults(pipeline);
+    });
+```
+
+### Branching with `Map`
+
+```csharp
+pipeline.Map(
+    ctx => ctx.Source.StartsWith("audit/"),
+    auditBranch =>
+    {
+        auditBranch.UseMiddleware<AuditLoggingMiddleware>();
+        MessageValidationPipeline.ConfigureDefaults(auditBranch);
+    });
+
+// Non-"audit/..." messages fall through to the outer pipeline
+MessageValidationPipeline.ConfigureDefaults(pipeline);
+```
+
+`Map` executes the branch and **skips the remainder of the outer pipeline**
+when the predicate returns `true`, just like `IApplicationBuilder.Map`.
+
 ## Adapter Packages
 
 | Package | Role | Status | Docs |
@@ -299,7 +382,7 @@ flowchart LR
 | `MessageValidation.Kafka` | Kafka transport hook (Confluent) | ✅ Available | [README](MessageValidation.Kafka/README.md) |
 | `MessageValidation.AzureServiceBus` | Azure Service Bus transport hook | ✅ Available | [README](MessageValidation.AzureServiceBus/README.md) |
 | `MessageValidation.AzureEventHubs` | Azure Event Hubs transport hook | ✅ Available | [README](MessageValidation.AzureEventHubs/README.md) |
-| `MessageValidation.Nats` | NATS transport hook | 🔜 Planned | — |
+| `MessageValidation.NatsNet` | NATS transport hook (NATS.Net) | ✅ Available | [README](MessageValidation.NatsNet/README.md) |
 
 ## Roadmap
 
@@ -309,7 +392,7 @@ flowchart LR
 - **v1.0** — RabbitMQ & Kafka adapters
 - **v1.1** — Azure Service Bus adapter (`ServiceBusProcessor` / `ServiceBusSessionProcessor`, passwordless auth)
 - **v1.2** — Azure Event Hubs adapter (`EventProcessorClient` / `EventHubConsumerClient`, passwordless auth)
-- **v2.0** — Middleware-style pipeline (`Use`, `Map`), NATS adapter
+- **v2.0** — Middleware-style pipeline (`Use`, `Map`, `IMessageMiddleware`), NATS adapter ✅
 
 ## Requirements
 

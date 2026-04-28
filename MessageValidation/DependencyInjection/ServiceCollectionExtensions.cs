@@ -46,7 +46,41 @@ public static class ServiceCollectionExtensions
         services.AddMetrics();
         services.AddSingleton(options);
         services.TryAddSingleton<MessageValidationMetrics>();
-        services.AddSingleton<MessageValidationPipeline>();
+        services.AddSingleton<MessageValidationPipeline>(sp =>
+            new MessageValidationPipeline(
+                sp.GetRequiredService<IServiceScopeFactory>(),
+                sp,
+                configurePipeline: null));
+        services.TryAddSingleton<IMessageValidationPipeline>(sp => sp.GetRequiredService<MessageValidationPipeline>());
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds the core <see cref="IMessageValidationPipeline"/> and lets the caller compose
+    /// a custom middleware pipeline via <paramref name="configurePipeline"/>. Call
+    /// <see cref="MessageValidationPipeline.ConfigureDefaults"/> from the callback to keep
+    /// the built-in stages.
+    /// </summary>
+    public static IServiceCollection AddMessageValidation(
+        this IServiceCollection services,
+        Action<MessageValidationOptions> configure,
+        Action<IMessagePipelineBuilder> configurePipeline)
+    {
+        ArgumentNullException.ThrowIfNull(configurePipeline);
+
+        var options = new MessageValidationOptions();
+        configure(options);
+
+        services.AddLogging();
+        services.AddMetrics();
+        services.AddSingleton(options);
+        services.TryAddSingleton<MessageValidationMetrics>();
+        services.AddSingleton<MessageValidationPipeline>(sp =>
+            new MessageValidationPipeline(
+                sp.GetRequiredService<IServiceScopeFactory>(),
+                sp,
+                configurePipeline));
         services.TryAddSingleton<IMessageValidationPipeline>(sp => sp.GetRequiredService<MessageValidationPipeline>());
 
         return services;
