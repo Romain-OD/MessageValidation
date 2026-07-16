@@ -20,6 +20,7 @@
   <Project Path="MessageValidation.Kafka/MessageValidation.Kafka.csproj" Id="b186e3db-81e3-4d66-9e68-a1c2d51e083a" />
   <Project Path="MessageValidation.MqttNet.Tests/MessageValidation.MqttNet.Tests.csproj" />
   <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
+  <Project Path="MessageValidation.NatsNet.Tests/MessageValidation.NatsNet.Tests.csproj" />
   <Project Path="MessageValidation.NatsNet/MessageValidation.NatsNet.csproj">
     <Build Solution="Debug|*" Project="false" />
   </Project>
