@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Examples/">
+    <Project Path="Example.ImmediateValidation/Example.ImmediateValidation.csproj" Id="3a5bebdd-c2a4-45ea-af82-15be6400e425" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="MessageValidation-logo.png" />
     <File Path="README.md" />
@@ -11,11 +14,16 @@
   <Project Path="MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj" Id="b566e81c-5728-4a53-9908-348a6907f810" />
   <Project Path="MessageValidation.FluentValidation.Tests/MessageValidation.FluentValidation.Tests.csproj" />
   <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />
+  <Project Path="MessageValidation.ImmediateValidations.Tests/MessageValidation.ImmediateValidations.Tests.csproj" Id="ed95c93e-8c9d-402f-a892-a1e3ca2df846" />
+  <Project Path="MessageValidation.ImmediateValidations/MessageValidation.ImmediateValidations.csproj" Id="933dd8c0-1d79-4c61-a93f-3034642d5a70" />
   <Project Path="MessageValidation.Kafka.Tests/MessageValidation.Kafka.Tests.csproj" Id="2d6fb793-75aa-4499-b697-bb5cb7f4f152" />
   <Project Path="MessageValidation.Kafka/MessageValidation.Kafka.csproj" Id="b186e3db-81e3-4d66-9e68-a1c2d51e083a" />
   <Project Path="MessageValidation.MqttNet.Tests/MessageValidation.MqttNet.Tests.csproj" />
   <Project Path="MessageValidation.MqttNet/MessageValidation.MqttNet.csproj" />
-  <Project Path="MessageValidation.NatsNet/MessageValidation.NatsNet.csproj" />
+  <Project Path="MessageValidation.NatsNet.Tests/MessageValidation.NatsNet.Tests.csproj" />
+  <Project Path="MessageValidation.NatsNet/MessageValidation.NatsNet.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="MessageValidation.RabbitMQ.Tests/MessageValidation.RabbitMQ.Tests.csproj" Id="82f42638-ba6d-4418-a022-67e330eda183" />
   <Project Path="MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj" Id="3f1e8ce4-f977-4214-8347-850660323e91" />
   <Project Path="MessageValidation.Tests/MessageValidation.Tests.csproj" />

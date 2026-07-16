@@ -1,15 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
-    <PackageId>MessageValidation.FluentValidation</PackageId>
+    <PackageId>MessageValidation.ImmediateValidations</PackageId>
     <Version>2.1.0</Version>
     <Authors>Romain-OD</Authors>
-    <Description>FluentValidation adapter for the MessageValidation pipeline — automatically bridge FluentValidation AbstractValidator&lt;T&gt; rules into IMessageValidator&lt;T&gt; with assembly scanning and scoped DI lifetime.</Description>
-    <PackageTags>messaging;validation;message-validation;fluentvalidation;fluent-validation;pipeline;rules;dotnet;middleware;validator;consumer;microservices</PackageTags>
+    <Description>Immediate.Validations adapter for the MessageValidation pipeline — bridge source-generated, AOT-friendly, zero-reflection IValidationTarget&lt;T&gt; rules into IMessageValidator&lt;T&gt;.</Description>
+    <PackageTags>messaging;validation;message-validation;immediate-validations;immediate;source-generator;aot;pipeline;dotnet;middleware;consumer;microservices</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.1.1" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="Immediate.Validations" Version="3.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
   </ItemGroup>
 
