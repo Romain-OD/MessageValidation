@@ -24,8 +24,11 @@ jobs:
       - name: Build
         run: dotnet build MessageValidation.slnx --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test MessageValidation.slnx --configuration Release --no-build --verbosity normal
+      - name: Unit tests
+        run: dotnet test MessageValidation.slnx --configuration Release --no-build --filter "Category!=Integration" --verbosity normal
+
+      - name: Integration tests
+        run: dotnet test MessageValidation.IntegrationTests/MessageValidation.IntegrationTests.csproj --configuration Release --no-build --filter "Category=Integration" --verbosity normal
 
       - name: Pack (validate packages)
         run: |
@@ -38,4 +41,3 @@ jobs:
           dotnet pack MessageValidation.Kafka/MessageValidation.Kafka.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.AzureServiceBus/MessageValidation.AzureServiceBus.csproj --configuration Release --no-build --output ./nupkgs
           dotnet pack MessageValidation.AzureEventHubs/MessageValidation.AzureEventHubs.csproj --configuration Release --no-build --output ./nupkgs
-

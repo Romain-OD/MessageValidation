@@ -16,6 +16,7 @@
   <Project Path="MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj" />
   <Project Path="MessageValidation.ImmediateValidations.Tests/MessageValidation.ImmediateValidations.Tests.csproj" Id="ed95c93e-8c9d-402f-a892-a1e3ca2df846" />
   <Project Path="MessageValidation.ImmediateValidations/MessageValidation.ImmediateValidations.csproj" Id="933dd8c0-1d79-4c61-a93f-3034642d5a70" />
+  <Project Path="MessageValidation.IntegrationTests/MessageValidation.IntegrationTests.csproj" />
   <Project Path="MessageValidation.Kafka.Tests/MessageValidation.Kafka.Tests.csproj" Id="2d6fb793-75aa-4499-b697-bb5cb7f4f152" />
   <Project Path="MessageValidation.Kafka/MessageValidation.Kafka.csproj" Id="b186e3db-81e3-4d66-9e68-a1c2d51e083a" />
   <Project Path="MessageValidation.MqttNet.Tests/MessageValidation.MqttNet.Tests.csproj" />

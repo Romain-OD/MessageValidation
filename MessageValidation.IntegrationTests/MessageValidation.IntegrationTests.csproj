@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MessageValidation\MessageValidation.csproj" />
+    <ProjectReference Include="..\MessageValidation.AzureEventHubs\MessageValidation.AzureEventHubs.csproj" />
+    <ProjectReference Include="..\MessageValidation.AzureServiceBus\MessageValidation.AzureServiceBus.csproj" />
+    <ProjectReference Include="..\MessageValidation.Kafka\MessageValidation.Kafka.csproj" />
+    <ProjectReference Include="..\MessageValidation.MqttNet\MessageValidation.MqttNet.csproj" />
+    <ProjectReference Include="..\MessageValidation.NatsNet\MessageValidation.NatsNet.csproj" />
+    <ProjectReference Include="..\MessageValidation.RabbitMQ\MessageValidation.RabbitMQ.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageReference Include="Testcontainers" Version="4.13.0" />
+    <PackageReference Include="Testcontainers.Azurite" Version="4.13.0" />
+    <PackageReference Include="Testcontainers.Kafka" Version="4.13.0" />
+    <PackageReference Include="Testcontainers.Mosquitto" Version="4.13.0" />
+    <PackageReference Include="Testcontainers.MsSql" Version="4.13.0" />
+    <PackageReference Include="Testcontainers.Nats" Version="4.13.0" />
+    <PackageReference Include="Testcontainers.RabbitMq" Version="4.13.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Infrastructure\**\*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

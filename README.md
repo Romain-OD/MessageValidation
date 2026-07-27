@@ -196,6 +196,26 @@ public class MyDeadLetterHandler : IDeadLetterHandler
 | `IDeadLetterHandler` | Handles dead-lettered messages (receives `DeadLetterContext`) |
 | `IMessageMiddleware` | Composable pipeline stage (v2.0+) — see [Middleware pipeline](#middleware-pipeline-v20) |
 
+## Testing
+
+Run the unit and in-process integration tests:
+
+```bash
+dotnet test MessageValidation.slnx --filter "Category!=Integration"
+```
+
+The transport integration suite requires a running Docker engine and starts
+RabbitMQ, Kafka, Mosquitto, NATS, Azure Service Bus, and Azure Event Hubs with
+Testcontainers:
+
+```bash
+dotnet test MessageValidation.IntegrationTests/MessageValidation.IntegrationTests.csproj --filter "Category=Integration"
+```
+
+The Azure emulator tests set `ACCEPT_EULA=Y` inside the required Service Bus,
+Event Hubs, and SQL Server containers. Running them accepts the applicable
+Microsoft container license terms.
+
 ## Architecture
 
 The core library is **transport-agnostic** and **validation-framework-agnostic**. It defines contracts and a pipeline — adapters bring the implementations.
