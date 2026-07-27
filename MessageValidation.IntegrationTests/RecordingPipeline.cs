@@ -11,6 +11,9 @@ internal sealed class RecordingPipeline : IMessageValidationPipeline
         return Task.CompletedTask;
     }
 
+    public void Fail(Exception exception) =>
+        _received.TrySetException(exception);
+
     public Task<MessageContext> WaitAsync(CancellationToken ct) =>
         _received.Task.WaitAsync(ct);
 }

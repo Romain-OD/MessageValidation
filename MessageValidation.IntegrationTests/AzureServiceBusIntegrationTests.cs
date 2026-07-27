@@ -68,7 +68,11 @@ public class AzureServiceBusIntegrationTests
             QueueName,
             new ServiceBusProcessorOptions { MaxConcurrentCalls = 1 });
         var pipeline = new RecordingPipeline();
-        processor.UseMessageValidation(pipeline);
+        processor.UseMessageValidation(pipeline, args =>
+        {
+            pipeline.Fail(args.Exception);
+            return Task.CompletedTask;
+        });
 
         var payload = """{"orderId":42}"""u8.ToArray();
         MessageContext context;
