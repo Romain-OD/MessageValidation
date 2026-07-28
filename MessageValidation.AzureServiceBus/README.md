@@ -180,7 +180,7 @@ Registers a singleton `ServiceBusClient` built from a namespace and a `TokenCred
 
 ## Requirements
 
-- .NET 10+
+- .NET 8.0+ (targets `net8.0` and `net10.0`)
 - [MessageValidation](https://www.nuget.org/packages/MessageValidation) core package
 - [Azure.Messaging.ServiceBus](https://www.nuget.org/packages/Azure.Messaging.ServiceBus) 7+
 
