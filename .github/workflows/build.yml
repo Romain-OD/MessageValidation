@@ -16,7 +16,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: |
+            8.0.x
+            10.0.x
 
       - name: Restore dependencies
         run: dotnet restore MessageValidation.slnx
@@ -31,13 +33,4 @@ jobs:
         run: dotnet test MessageValidation.IntegrationTests/MessageValidation.IntegrationTests.csproj --configuration Release --no-build --filter "Category=Integration" --verbosity normal
 
       - name: Pack (validate packages)
-        run: |
-          dotnet pack MessageValidation/MessageValidation.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.FluentValidation/MessageValidation.FluentValidation.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.DataAnnotations/MessageValidation.DataAnnotations.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.MqttNet/MessageValidation.MqttNet.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.NatsNet/MessageValidation.NatsNet.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.Kafka/MessageValidation.Kafka.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.AzureServiceBus/MessageValidation.AzureServiceBus.csproj --configuration Release --no-build --output ./nupkgs
-          dotnet pack MessageValidation.AzureEventHubs/MessageValidation.AzureEventHubs.csproj --configuration Release --no-build --output ./nupkgs
+        run: dotnet pack MessageValidation.slnx --configuration Release --no-build --output ./nupkgs

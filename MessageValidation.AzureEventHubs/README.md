@@ -167,7 +167,7 @@ Same, but using passwordless auth.
 
 ## Requirements
 
-- .NET 10+
+- .NET 8.0+ (targets `net8.0` and `net10.0`)
 - [MessageValidation](https://www.nuget.org/packages/MessageValidation) core package
 - [Azure.Messaging.EventHubs](https://www.nuget.org/packages/Azure.Messaging.EventHubs) 5+
 - [Azure.Messaging.EventHubs.Processor](https://www.nuget.org/packages/Azure.Messaging.EventHubs.Processor) 5+ (for `EventProcessorClient`)

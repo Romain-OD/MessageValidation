@@ -117,7 +117,7 @@ Registers a singleton `INatsConnection` in the DI container.
 
 ## Requirements
 
-- .NET 10+
+- .NET 8.0+ (targets `net8.0` and `net10.0`)
 - [MessageValidation](https://www.nuget.org/packages/MessageValidation) core package
 - [NATS.Net](https://www.nuget.org/packages/NATS.Net) 2+
 

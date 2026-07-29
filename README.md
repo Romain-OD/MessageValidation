@@ -416,7 +416,7 @@ when the predicate returns `true`, just like `IApplicationBuilder.Map`.
 
 ## Requirements
 
-- .NET 10+
+- .NET 8.0+ (targets `net8.0` and `net10.0`)
 
 ## Author
 

@@ -117,7 +117,7 @@ Registers a `ConnectionFactory` and singleton `IConnection` in the DI container.
 
 ## Requirements
 
-- .NET 10+
+- .NET 8.0+ (targets `net8.0` and `net10.0`)
 - [MessageValidation](https://www.nuget.org/packages/MessageValidation) core package
 - [RabbitMQ.Client](https://www.nuget.org/packages/RabbitMQ.Client) 7+
 

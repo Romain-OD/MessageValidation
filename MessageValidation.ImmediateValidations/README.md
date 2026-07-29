@@ -53,6 +53,6 @@ That's it. The pipeline will call the source-generated `TemperatureReading.Valid
 
 ## Requirements
 
-- .NET 10+
+- .NET 8.0+ (targets `net8.0` and `net10.0`)
 - [MessageValidation](https://www.nuget.org/packages/MessageValidation) >= 2.0.0
 - [Immediate.Validations](https://www.nuget.org/packages/Immediate.Validations) >= 3.3.0
