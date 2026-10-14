@@ -1,5 +1,10 @@
 # MessageValidation
 
+[![NuGet](https://img.shields.io/nuget/v/MessageValidation.svg)](https://www.nuget.org/packages/MessageValidation/)
+[![Downloads](https://img.shields.io/nuget/dt/MessageValidation.svg)](https://www.nuget.org/packages/MessageValidation/)
+[![Build](https://github.com/Romain-OD/MessageValidation/actions/workflows/build.yml/badge.svg)](https://github.com/Romain-OD/MessageValidation/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A **protocol-agnostic message validation pipeline** for .NET — validate incoming messages from MQTT, RabbitMQ, Kafka, Azure Service Bus, NATS, or any messaging transport with DI integration, pluggable validation, and configurable failure handling.
 
 ## Why?
@@ -18,6 +23,28 @@ The core has **zero opinion** on which messaging library or validation framework
 
 ```bash
 dotnet add package MessageValidation
+```
+
+The core package alone is not enough for a specific transport — pick **one transport package** and **one validation package** below; both pull in the core automatically.
+
+| Package | Use it for |
+|---|---|
+| `MessageValidation` | Core pipeline — always required |
+| `MessageValidation.RabbitMQ` | RabbitMQ consumers |
+| `MessageValidation.Kafka` | Kafka consumers |
+| `MessageValidation.MqttNet` | MQTT clients and brokers |
+| `MessageValidation.NatsNet` | NATS subscribers |
+| `MessageValidation.AzureServiceBus` | Azure Service Bus processors |
+| `MessageValidation.AzureEventHubs` | Azure Event Hubs processors |
+| `MessageValidation.FluentValidation` | Validate with FluentValidation |
+| `MessageValidation.DataAnnotations` | Validate with DataAnnotations |
+| `MessageValidation.ImmediateValidations` | Validate with Immediate.Validations |
+
+For example, a Kafka consumer validated with FluentValidation:
+
+```bash
+dotnet add package MessageValidation.Kafka
+dotnet add package MessageValidation.FluentValidation
 ```
 
 ## Quick Start
@@ -403,6 +430,7 @@ when the predicate returns `true`, just like `IApplicationBuilder.Map`.
 | `MessageValidation.AzureServiceBus` | Azure Service Bus transport hook | ✅ Available | [README](MessageValidation.AzureServiceBus/README.md) |
 | `MessageValidation.AzureEventHubs` | Azure Event Hubs transport hook | ✅ Available | [README](MessageValidation.AzureEventHubs/README.md) |
 | `MessageValidation.NatsNet` | NATS transport hook (NATS.Net) | ✅ Available | [README](MessageValidation.NatsNet/README.md) |
+| `MessageValidation.ImmediateValidations` | Immediate.Validations adapter | ✅ Available | [README](MessageValidation.ImmediateValidations/README.md) |
 
 ## Roadmap
 
