@@ -5,17 +5,7 @@
     <PackageId>MessageValidation.DataAnnotations</PackageId>
     <Description>DataAnnotations validation adapter for the MessageValidation pipeline — automatically validate messages using System.ComponentModel.DataAnnotations attributes ([Required], [Range], [StringLength], etc.) with zero custom validator code.</Description>
     <PackageTags>messaging;validation;message-validation;dataannotations;data-annotations;pipeline;attributes;dotnet;middleware;required;range;consumer</PackageTags>
-<<<<<<< HEAD
-=======
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>https://github.com/Romain-OD/MessageValidation/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>MessageValidation-logo.png</PackageIcon>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
->>>>>>> origin/main
   </PropertyGroup>
 
   <ItemGroup>

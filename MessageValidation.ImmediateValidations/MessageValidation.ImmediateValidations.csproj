@@ -5,17 +5,7 @@
     <PackageId>MessageValidation.ImmediateValidations</PackageId>
     <Description>Immediate.Validations adapter for the MessageValidation pipeline — bridge source-generated, AOT-friendly, zero-reflection IValidationTarget&lt;T&gt; rules into IMessageValidator&lt;T&gt;.</Description>
     <PackageTags>messaging;validation;message-validation;immediate-validations;immediate;source-generator;aot;pipeline;dotnet;middleware;consumer;microservices</PackageTags>
-<<<<<<< HEAD
-=======
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>https://github.com/Romain-OD/MessageValidation/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>MessageValidation-logo.png</PackageIcon>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
->>>>>>> origin/main
   </PropertyGroup>
 
   <ItemGroup>

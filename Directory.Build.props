@@ -1,5 +1,4 @@
 <Project>
-<<<<<<< HEAD
 
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -20,7 +19,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-=======
   <!-- SourceLink + symbol packages for packable projects (SourceLink for GitHub is built into the .NET 8+ SDK) -->
   <PropertyGroup Condition="'$(IsPackable)' != 'false'">
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -33,5 +31,4 @@
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
->>>>>>> origin/main
 </Project>
