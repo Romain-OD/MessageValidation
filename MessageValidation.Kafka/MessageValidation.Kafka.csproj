@@ -2,22 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.Kafka</PackageId>
-    <Version>2.1.0</Version>
-    <Authors>Romain-OD</Authors>
     <Description>Confluent Kafka transport adapter for the MessageValidation pipeline — subscribe to Kafka topics and automatically deserialize, validate, and dispatch consumed messages. Includes partition, offset, and key metadata.</Description>
     <PackageTags>messaging;validation;message-validation;kafka;confluent;confluent-kafka;pipeline;consumer;middleware;microservices;event-driven;streaming;dotnet</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>https://github.com/Romain-OD/MessageValidation/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>MessageValidation-logo.png</PackageIcon>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="2.13.2" />
+    <PackageReference Include="Confluent.Kafka" />
   </ItemGroup>
 
   <ItemGroup>
