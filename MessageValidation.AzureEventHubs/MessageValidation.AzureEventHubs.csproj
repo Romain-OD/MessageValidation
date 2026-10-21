@@ -5,6 +5,17 @@
     <PackageId>MessageValidation.AzureEventHubs</PackageId>
     <Description>Azure Event Hubs transport adapter for the MessageValidation pipeline — wire an EventProcessorClient or EventHubConsumerClient into the pipeline so every received event is automatically deserialized, validated, and dispatched. Includes partition, sequence number, offset, and application properties metadata.</Description>
     <PackageTags>messaging;validation;message-validation;azure;azure-event-hubs;eventhubs;event-streaming;pipeline;consumer;middleware;microservices;event-driven;dotnet;kafka-compatible;telemetry</PackageTags>
+<<<<<<< HEAD
+=======
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/Romain-OD/MessageValidation/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>MessageValidation-logo.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+>>>>>>> origin/main
   </PropertyGroup>
 
   <ItemGroup>
