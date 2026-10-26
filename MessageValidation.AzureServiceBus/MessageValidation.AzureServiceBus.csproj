@@ -2,22 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.AzureServiceBus</PackageId>
-    <Version>2.1.0</Version>
-    <Authors>Romain-OD</Authors>
     <Description>Azure Service Bus transport adapter for the MessageValidation pipeline â€” wire a ServiceBusProcessor (or ServiceBusSessionProcessor) into the pipeline so every received message is automatically deserialized, validated, and dispatched. Includes Subject routing, session support, and full message metadata.</Description>
     <PackageTags>messaging;validation;message-validation;azure;azure-service-bus;servicebus;pipeline;consumer;middleware;microservices;event-driven;dotnet;dead-letter;queue;topic</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>https://github.com/Romain-OD/MessageValidation/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>MessageValidation-logo.png</PackageIcon>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.20.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 
   <ItemGroup>
