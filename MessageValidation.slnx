@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Examples/">
     <Project Path="Example.ImmediateValidation/Example.ImmediateValidation.csproj" Id="3a5bebdd-c2a4-45ea-af82-15be6400e425" />
+    <Project Path="examples/MessageValidation.SparkplugB.Example/MessageValidation.SparkplugB.Example.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="MessageValidation-logo.png" />
@@ -27,6 +28,8 @@
   </Project>
   <Project Path="MessageValidation.RabbitMQ.Tests/MessageValidation.RabbitMQ.Tests.csproj" Id="82f42638-ba6d-4418-a022-67e330eda183" />
   <Project Path="MessageValidation.RabbitMQ/MessageValidation.RabbitMQ.csproj" Id="3f1e8ce4-f977-4214-8347-850660323e91" />
+  <Project Path="MessageValidation.SparkplugB.Tests/MessageValidation.SparkplugB.Tests.csproj" />
+  <Project Path="MessageValidation.SparkplugB/MessageValidation.SparkplugB.csproj" />
   <Project Path="MessageValidation.Tests/MessageValidation.Tests.csproj" />
   <Project Path="MessageValidation/MessageValidation.csproj" />
 </Solution>

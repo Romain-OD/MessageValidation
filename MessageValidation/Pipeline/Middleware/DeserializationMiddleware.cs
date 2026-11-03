@@ -3,7 +3,8 @@ namespace MessageValidation;
 /// <summary>
 /// Deserializes <see cref="MessageContext.RawPayload"/> into the type previously resolved
 /// by <see cref="TypeResolutionMiddleware"/> and stores the result in
-/// <see cref="MessageContext.Message"/>.
+/// <see cref="MessageContext.Message"/>. Skipped when an earlier middleware already
+/// populated <see cref="MessageContext.Message"/> (e.g. a protocol-specific parser).
 /// </summary>
 public sealed class DeserializationMiddleware(IMessageDeserializer deserializer) : IMessageMiddleware
 {
@@ -12,7 +13,7 @@ public sealed class DeserializationMiddleware(IMessageDeserializer deserializer)
         if (context.MessageType is null)
             return;
 
-        context.Message = deserializer.Deserialize(context.RawPayload, context.MessageType);
+        context.Message ??= deserializer.Deserialize(context.RawPayload, context.MessageType);
         await next(context, ct).ConfigureAwait(false);
     }
 }

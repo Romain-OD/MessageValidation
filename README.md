@@ -296,8 +296,17 @@ MessageValidation-Project/
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddNatsNetMessageValidation()
 │
+├── MessageValidation.SparkplugB/               ← Validation adapter (Eclipse Sparkplug B, IIoT)
+│   ├── Proto/sparkplug_b.proto                   Eclipse Tahu schema (EPL-2.0)
+│   ├── SparkplugTopic.cs                         spBv1.0 topic parser
+│   ├── SparkplugBMiddleware.cs                   UseSparkplugB(): topic + protobuf → SparkplugBMessage
+│   ├── SparkplugBValidator.cs                    Required fields, DataTypes, seq/bdSeq tracking
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddSparkplugBValidation()
+│
 ├── examples/
-│   └── MessageValidation.Example/              ← Runnable console demo
+│   ├── MessageValidation.Example/              ← Runnable console demo
+│   └── MessageValidation.SparkplugB.Example/   ← Sparkplug B worker + simulated edge node
 │
 └── README.md
 ```
@@ -403,6 +412,7 @@ when the predicate returns `true`, just like `IApplicationBuilder.Map`.
 | `MessageValidation.AzureServiceBus` | Azure Service Bus transport hook | ✅ Available | [README](MessageValidation.AzureServiceBus/README.md) |
 | `MessageValidation.AzureEventHubs` | Azure Event Hubs transport hook | ✅ Available | [README](MessageValidation.AzureEventHubs/README.md) |
 | `MessageValidation.NatsNet` | NATS transport hook (NATS.Net) | ✅ Available | [README](MessageValidation.NatsNet/README.md) |
+| `MessageValidation.SparkplugB` | Eclipse Sparkplug B (IIoT) topic, payload & seq validator | ✅ Available | [README](MessageValidation.SparkplugB/README.md) |
 
 ## Roadmap
 

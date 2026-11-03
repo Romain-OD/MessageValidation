@@ -16,6 +16,7 @@ namespace MessageValidation;
 /// <list type="bullet">
 ///   <item><description><c>MessageValidation.FluentValidation</c> — bridges <c>FluentValidation.IValidator&lt;T&gt;</c>.</description></item>
 ///   <item><description><c>MessageValidation.DataAnnotations</c> — bridges <c>System.ComponentModel.DataAnnotations</c> attributes.</description></item>
+///   <item><description><c>MessageValidation.SparkplugB</c> — validates Eclipse Sparkplug B topics and payloads.</description></item>
 /// </list>
 /// </remarks>
 /// <example>
