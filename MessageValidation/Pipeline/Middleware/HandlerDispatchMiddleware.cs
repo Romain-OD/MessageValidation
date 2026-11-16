@@ -10,11 +10,10 @@ public sealed class HandlerDispatchMiddleware(MessageValidationMetrics metrics) 
     {
         if (context.MessageType is not null && context.Message is not null && context.Services is not null)
         {
-            var handlerType = typeof(IMessageHandler<>).MakeGenericType(context.MessageType);
-            if (context.Services.GetService(handlerType) is { } handler)
+            var dispatch = MessageDispatchCache.Get(context.MessageType);
+            if (context.Services.GetService(dispatch.HandlerServiceType) is { } handler)
             {
-                var handle = MessageDispatchCache.GetHandleDelegate(context.MessageType);
-                await handle(handler, context.Message, context, ct).ConfigureAwait(false);
+                await dispatch.Handle(handler, context.Message, context, ct).ConfigureAwait(false);
             }
         }
 

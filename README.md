@@ -323,8 +323,22 @@ MessageValidation-Project/
 │   └── DependencyInjection/
 │       └── ServiceCollectionExtensions.cs        AddNatsNetMessageValidation()
 │
+├── MessageValidation.OnnxRuntime/              ← Validation adapter (ONNX Runtime, edge AI)
+│   ├── OnnxMessageValidator.cs                   ONNX anomaly score → IMessageValidator<T>
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddMessageOnnxValidation<T>()
+│
+├── MessageValidation.SparkplugB/               ← Validation adapter (Eclipse Sparkplug B, IIoT)
+│   ├── Proto/sparkplug_b.proto                   Eclipse Tahu schema (EPL-2.0)
+│   ├── SparkplugTopic.cs                         spBv1.0 topic parser
+│   ├── SparkplugBMiddleware.cs                   UseSparkplugB(): topic + protobuf → SparkplugBMessage
+│   ├── SparkplugBValidator.cs                    Required fields, DataTypes, seq/bdSeq tracking
+│   └── DependencyInjection/
+│       └── ServiceCollectionExtensions.cs        AddSparkplugBValidation()
+│
 ├── examples/
-│   └── MessageValidation.Example/              ← Runnable console demo
+│   ├── MessageValidation.Example/              ← Runnable console demo
+│   └── MessageValidation.SparkplugB.Example/   ← Sparkplug B worker + simulated edge node
 │
 └── README.md
 ```
@@ -431,6 +445,37 @@ when the predicate returns `true`, just like `IApplicationBuilder.Map`.
 | `MessageValidation.AzureEventHubs` | Azure Event Hubs transport hook | ✅ Available | [README](MessageValidation.AzureEventHubs/README.md) |
 | `MessageValidation.NatsNet` | NATS transport hook (NATS.Net) | ✅ Available | [README](MessageValidation.NatsNet/README.md) |
 | `MessageValidation.ImmediateValidations` | Immediate.Validations adapter | ✅ Available | [README](MessageValidation.ImmediateValidations/README.md) |
+| `MessageValidation.OnnxRuntime` | Edge-AI validator (local ONNX anomaly model) | ✅ Available | [README](MessageValidation.OnnxRuntime/README.md) |
+| `MessageValidation.SparkplugB` | Eclipse Sparkplug B (IIoT) topic, payload & seq validator | ✅ Available | [README](MessageValidation.SparkplugB/README.md) |
+
+## Edge AI & Native AOT (v2.2+)
+
+The core package is trim- and Native AOT-compatible (`IsAotCompatible`), so it fits small,
+fast-starting binaries on ARM64 edge devices (Raspberry Pi, Jetson, IoT Edge modules). Types
+registered with `MapSource<T>` are dispatched without reflection. Use a source-generated
+JSON deserializer:
+
+```csharp
+[JsonSerializable(typeof(TemperatureReading))]
+public partial class AppJson : JsonSerializerContext;
+
+public sealed class SourceGenDeserializer : IMessageDeserializer
+{
+    public object Deserialize(byte[] payload, Type targetType) =>
+        JsonSerializer.Deserialize(payload, targetType, AppJson.Default)!;
+}
+```
+
+```bash
+dotnet publish -c Release -r linux-arm64 -p:PublishAot=true
+```
+
+Pair it with `MessageValidation.OnnxRuntime` to reject anomalous sensor readings on-device:
+
+```csharp
+services.AddMessageOnnxValidation<TemperatureReading>(
+    "models/temperature-anomaly.onnx", r => [(float)r.Value], threshold: 0.8f);
+```
 
 ## Roadmap
 
@@ -441,6 +486,7 @@ when the predicate returns `true`, just like `IApplicationBuilder.Map`.
 - **v1.1** — Azure Service Bus adapter (`ServiceBusProcessor` / `ServiceBusSessionProcessor`, passwordless auth)
 - **v1.2** — Azure Event Hubs adapter (`EventProcessorClient` / `EventHubConsumerClient`, passwordless auth)
 - **v2.0** — Middleware-style pipeline (`Use`, `Map`, `IMessageMiddleware`), NATS adapter ✅
+- **v2.2** — Native AOT / trim-safe core, ONNX Runtime edge-AI validator ✅
 
 ## Requirements
 

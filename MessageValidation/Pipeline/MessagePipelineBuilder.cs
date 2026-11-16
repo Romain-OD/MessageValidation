@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageValidation;
@@ -25,7 +26,7 @@ public sealed class MessagePipelineBuilder : IMessagePipelineBuilder
         return this;
     }
 
-    public IMessagePipelineBuilder UseMiddleware<TMiddleware>() where TMiddleware : IMessageMiddleware
+    public IMessagePipelineBuilder UseMiddleware<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TMiddleware>() where TMiddleware : IMessageMiddleware
     {
         return Use(next => async (ctx, ct) =>
         {

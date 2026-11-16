@@ -18,8 +18,17 @@ bump is listed under **Version bump only**.
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-11-16
+
 ### Added
 
+- `MessageValidation.SparkplugB`: new Eclipse Sparkplug B validator — parses
+  `spBv1.0` topics and protobuf payloads, enforces required fields per message
+  type, checks metric DataTypes, and tracks `seq`/`bdSeq` per edge node.
+- `MessageValidation.OnnxRuntime`: new edge-AI validator that scores messages
+  with a local ONNX anomaly model.
+- `MessageValidation`: core package is now trim/Native AOT-compatible
+  (`IsAotCompatible`).
 - This `CHANGELOG.md`, and a `PackageReleaseNotes` link to it on the NuGet.org
   listing of every package. *(affects: all packages)*
 
@@ -80,6 +89,7 @@ bump is listed under **Version bump only**.
   `MessageValidation.Kafka`, and `MessageValidation.AzureServiceBus` carry no
   functional change beyond tracking the core 2.0.0 release.
 
-[Unreleased]: https://github.com/Romain-OD/MessageValidation/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/Romain-OD/MessageValidation/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/Romain-OD/MessageValidation/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/Romain-OD/MessageValidation/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/Romain-OD/MessageValidation/compare/v1.1.0...v2.0.0
