@@ -1,6 +1,16 @@
-<Solution>
+﻿<Solution>
   <Folder Name="/Examples/">
-    <Project Path="Example.ImmediateValidation/Example.ImmediateValidation.csproj" Id="3a5bebdd-c2a4-45ea-af82-15be6400e425" />
+    <Project Path="examples/MessageValidation.AzureEventHubs.Example/MessageValidation.AzureEventHubs.Example.csproj" />
+    <Project Path="examples/MessageValidation.AzureServiceBus.Example/MessageValidation.AzureServiceBus.Example.csproj" />
+    <Project Path="examples/MessageValidation.DataAnnotations.Example/MessageValidation.DataAnnotations.Example.csproj" />
+    <Project Path="examples/MessageValidation.Example/MessageValidation.Example.csproj" />
+    <Project Path="examples/MessageValidation.FluentValidation.Example/MessageValidation.FluentValidation.Example.csproj" />
+    <Project Path="examples/MessageValidation.ImmediateValidations.Example/MessageValidation.ImmediateValidations.Example.csproj" />
+    <Project Path="examples/MessageValidation.Kafka.Example/MessageValidation.Kafka.Example.csproj" />
+    <Project Path="examples/MessageValidation.MqttNet.Example/MessageValidation.MqttNet.Example.csproj" />
+    <Project Path="examples/MessageValidation.NatsNet.Example/MessageValidation.NatsNet.Example.csproj" />
+    <Project Path="examples/MessageValidation.OnnxRuntime.Example/MessageValidation.OnnxRuntime.Example.csproj" />
+    <Project Path="examples/MessageValidation.RabbitMQ.Example/MessageValidation.RabbitMQ.Example.csproj" />
     <Project Path="examples/MessageValidation.SparkplugB.Example/MessageValidation.SparkplugB.Example.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">

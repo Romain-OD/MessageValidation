@@ -1,0 +1,126 @@
+﻿# One example per MessageValidation NuGet package. Each example exits 0 (PASS) or 1 (FAIL).
+#   podman compose -f examples/compose.yaml run --rm example-kafka
+# or run them all: pwsh examples/run-all.ps1
+
+x-example: &example
+  image: localhost/messagevalidation-examples:latest
+  build:
+    context: ..
+    dockerfile: examples/Dockerfile
+
+services:
+  # â”€â”€ Examples without infrastructure â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  example-core:
+    <<: *example
+    command: ["dotnet", "MessageValidation.Example/MessageValidation.Example.dll"]
+
+  example-dataannotations:
+    <<: *example
+    command: ["dotnet", "MessageValidation.DataAnnotations.Example/MessageValidation.DataAnnotations.Example.dll"]
+
+  example-fluentvalidation:
+    <<: *example
+    command: ["dotnet", "MessageValidation.FluentValidation.Example/MessageValidation.FluentValidation.Example.dll"]
+
+  example-immediatevalidations:
+    <<: *example
+    command: ["dotnet", "MessageValidation.ImmediateValidations.Example/MessageValidation.ImmediateValidations.Example.dll"]
+
+  example-onnxruntime:
+    <<: *example
+    command: ["dotnet", "MessageValidation.OnnxRuntime.Example/MessageValidation.OnnxRuntime.Example.dll"]
+
+  # â”€â”€ Transport examples â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  example-mqttnet:
+    <<: *example
+    command: ["dotnet", "MessageValidation.MqttNet.Example/MessageValidation.MqttNet.Example.dll"]
+    environment:
+      MQTT_HOST: mosquitto
+    depends_on: [mosquitto]
+
+  example-sparkplugb:
+    <<: *example
+    command: ["dotnet", "MessageValidation.SparkplugB.Example/MessageValidation.SparkplugB.Example.dll"]
+    environment:
+      Broker: mosquitto
+    depends_on: [mosquitto]
+
+  example-rabbitmq:
+    <<: *example
+    command: ["dotnet", "MessageValidation.RabbitMQ.Example/MessageValidation.RabbitMQ.Example.dll"]
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    depends_on: [rabbitmq]
+
+  example-kafka:
+    <<: *example
+    command: ["dotnet", "MessageValidation.Kafka.Example/MessageValidation.Kafka.Example.dll"]
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on: [kafka]
+
+  example-natsnet:
+    <<: *example
+    command: ["dotnet", "MessageValidation.NatsNet.Example/MessageValidation.NatsNet.Example.dll"]
+    environment:
+      NATS_URL: nats://nats:4222
+    depends_on: [nats]
+
+  example-azureservicebus:
+    <<: *example
+    command: ["dotnet", "MessageValidation.AzureServiceBus.Example/MessageValidation.AzureServiceBus.Example.dll"]
+    environment:
+      SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus-emulator;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+    depends_on: [servicebus-emulator]
+
+  example-azureeventhubs:
+    <<: *example
+    command: ["dotnet", "MessageValidation.AzureEventHubs.Example/MessageValidation.AzureEventHubs.Example.dll"]
+    environment:
+      EVENTHUBS_CONNECTION_STRING: "Endpoint=sb://eventhubs-emulator;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+    depends_on: [eventhubs-emulator]
+
+  # â”€â”€ Infrastructure (same images as MessageValidation.IntegrationTests) â”€â”€â”€â”€â”€â”€
+  mosquitto:
+    image: docker.io/library/eclipse-mosquitto:2.0.22
+    command: ["mosquitto", "-c", "/mosquitto-no-auth.conf"]
+
+  rabbitmq:
+    image: docker.io/library/rabbitmq:4.1.8
+
+  kafka:
+    image: localhost/messagevalidation-kafka:3.9.1
+    build: kafka # KRaft single node, see kafka/Dockerfile
+
+  nats:
+    image: docker.io/library/nats:2.12.11
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.36.0
+
+  eventhubs-emulator:
+    image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:2.2.1
+    environment:
+      ACCEPT_EULA: "Y"
+      BLOB_SERVER: azurite
+      METADATA_SERVER: azurite
+    volumes:
+      - ../MessageValidation.IntegrationTests/Infrastructure/EventHubs/Config.json:/Eventhubs_Emulator/ConfigFiles/Config.json:ro
+    depends_on: [azurite]
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-CU26-ubuntu-22.04
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: MessageValidation1!
+
+  servicebus-emulator:
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:2.0.1
+    environment:
+      ACCEPT_EULA: "Y"
+      SQL_SERVER: mssql
+      MSSQL_SA_PASSWORD: MessageValidation1!
+    volumes:
+      - ../MessageValidation.IntegrationTests/Infrastructure/ServiceBus/Config.json:/ServiceBus_Emulator/ConfigFiles/Config.json:ro
+    depends_on: [mssql]
+    restart: on-failure

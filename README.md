@@ -1,4 +1,4 @@
-# MessageValidation
+﻿# MessageValidation
 
 [![NuGet](https://img.shields.io/nuget/v/MessageValidation.svg)](https://www.nuget.org/packages/MessageValidation/)
 [![Downloads](https://img.shields.io/nuget/dt/MessageValidation.svg)](https://www.nuget.org/packages/MessageValidation/)
@@ -337,8 +337,8 @@ MessageValidation-Project/
 │       └── ServiceCollectionExtensions.cs        AddSparkplugBValidation()
 │
 ├── examples/
-│   ├── MessageValidation.Example/              ← Runnable console demo
-│   └── MessageValidation.SparkplugB.Example/   ← Sparkplug B worker + simulated edge node
+│   ├── MessageValidation.*.Example/            ← One runnable example per NuGet package
+│   └── compose.yaml, run-all.ps1               ← Run them all in podman/docker (see examples/README.md)
 │
 └── README.md
 ```

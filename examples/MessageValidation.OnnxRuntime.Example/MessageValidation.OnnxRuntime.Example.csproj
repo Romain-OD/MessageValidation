@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MessageValidation.OnnxRuntime\MessageValidation.OnnxRuntime.csproj" />
+    <Compile Include="..\Shared\TemperatureReading.cs" Link="Shared\TemperatureReading.cs" />
+    <None Include="..\..\MessageValidation.OnnxRuntime.Tests\Models\max_score.onnx" Link="max_score.onnx" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

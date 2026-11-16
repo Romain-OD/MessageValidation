@@ -1,13 +1,13 @@
-namespace MessageValidation.Example;
+﻿namespace MessageValidation.Example;
 
-public class TemperatureReading
+public record TemperatureReading
 {
     public string SensorId { get; set; } = "";
     public double Value { get; set; }
     public DateTime Timestamp { get; set; }
 }
 
-public class DeviceHeartbeat
+public record DeviceHeartbeat
 {
     public string DeviceId { get; set; } = "";
     public string Status { get; set; } = "";
