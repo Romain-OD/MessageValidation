@@ -2,21 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.SparkplugB</PackageId>
-    <Version>2.2.0</Version>
-    <Authors>Romain-OD</Authors>
     <Description>Eclipse Sparkplug B validator for the MessageValidation pipeline — parses spBv1.0 topics and Protocol Buffers payloads, enforces required fields per message type (NBIRTH, NDATA, NDEATH, DBIRTH…), checks metric values against declared DataTypes, and tracks seq (0-255 rollover) and bdSeq per edge node.</Description>
     <PackageTags>messaging;validation;message-validation;sparkplug;sparkplug-b;mqtt;iiot;industrial-iot;protobuf;iot;edge;scada;uns;dotnet;pipeline</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>MessageValidation-logo.png</PackageIcon>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReleaseNotes>https://github.com/Romain-OD/MessageValidation/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <!-- Generated protobuf code has no XML docs. -->
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
@@ -35,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.36.2" />
-    <PackageReference Include="Grpc.Tools" Version="2.85.0">
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Tools">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

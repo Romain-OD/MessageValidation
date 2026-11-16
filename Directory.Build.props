@@ -1,0 +1,34 @@
+<Project>
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+  </PropertyGroup>
+
+  <!-- Shared package metadata: bump <Version> here to release all packages together. -->
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+    <Version>2.2.0</Version>
+    <Authors>Romain-OD</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>MessageValidation-logo.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- SourceLink + symbol packages for packable projects (SourceLink for GitHub is built into the .NET 8+ SDK) -->
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Deterministic builds on CI only; enabling locally would break local debugging -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>
