@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <PackageId>MessageValidation.OnnxRuntime</PackageId>
+    <Version>2.2.0</Version>
+    <Authors>Romain-OD</Authors>
+    <Description>ONNX Runtime adapter for the MessageValidation pipeline — run an on-device ONNX anomaly model as an IMessageValidator&lt;T&gt; so every message is scored locally (edge AI, no cloud round-trip) and rejected when its score exceeds a threshold.</Description>
+    <PackageTags>messaging;validation;message-validation;onnx;onnxruntime;edge-ai;anomaly-detection;machine-learning;iot;edge;sensors;pipeline;dotnet</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Romain-OD/MessageValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Romain-OD/MessageValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>MessageValidation-logo.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MessageValidation\MessageValidation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.31.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="..\MessageValidation-logo.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

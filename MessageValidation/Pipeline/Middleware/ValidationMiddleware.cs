@@ -16,11 +16,10 @@ public sealed class ValidationMiddleware(MessageValidationMetrics metrics) : IMe
             return;
         }
 
-        var validatorType = typeof(IMessageValidator<>).MakeGenericType(context.MessageType);
-        if (context.Services.GetService(validatorType) is { } validatorObj)
+        var dispatch = MessageDispatchCache.Get(context.MessageType);
+        if (context.Services.GetService(dispatch.ValidatorServiceType) is { } validatorObj)
         {
-            var validate = MessageDispatchCache.GetValidateDelegate(context.MessageType);
-            var result = await validate(validatorObj, context.Message, ct).ConfigureAwait(false);
+            var result = await dispatch.Validate(validatorObj, context.Message, ct).ConfigureAwait(false);
             context.ValidationResult = result;
 
             if (!result.IsValid)

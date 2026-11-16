@@ -1,61 +1,46 @@
 using System.Collections.Concurrent;
-using System.Linq.Expressions;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace MessageValidation;
 
 /// <summary>
-/// Internal cache of compiled delegates used by the validation and handler-dispatch
-/// middlewares to invoke generic <see cref="IMessageValidator{TMessage}"/> and
+/// Internal cache of typed invokers used by the validation and handler-dispatch
+/// middlewares to call generic <see cref="IMessageValidator{TMessage}"/> and
 /// <see cref="IMessageHandler{TMessage}"/> services without per-message reflection.
+/// Types mapped via <see cref="MessageValidationOptions.MapSource{TMessage}"/> are
+/// registered statically, which keeps the hot path trim- and Native AOT-safe.
 /// </summary>
 internal static class MessageDispatchCache
 {
-    private static readonly ConcurrentDictionary<Type, Func<object, object, CancellationToken, Task<MessageValidationResult>>> _validateDelegates = new();
-    private static readonly ConcurrentDictionary<Type, Func<object, object, MessageContext, CancellationToken, Task>> _handleDelegates = new();
+    internal sealed record Entry(
+        Type ValidatorServiceType,
+        Type HandlerServiceType,
+        Func<object, object, CancellationToken, Task<MessageValidationResult>> Validate,
+        Func<object, object, MessageContext, CancellationToken, Task> Handle);
 
-    public static Func<object, object, CancellationToken, Task<MessageValidationResult>> GetValidateDelegate(Type messageType)
-        => _validateDelegates.GetOrAdd(messageType, BuildValidateDelegate);
+    private static readonly ConcurrentDictionary<Type, Entry> _entries = new();
 
-    public static Func<object, object, MessageContext, CancellationToken, Task> GetHandleDelegate(Type messageType)
-        => _handleDelegates.GetOrAdd(messageType, BuildHandleDelegate);
+    private static readonly MethodInfo _createMethod =
+        typeof(MessageDispatchCache).GetMethod(nameof(Create), BindingFlags.NonPublic | BindingFlags.Static)!;
 
-    private static Func<object, object, CancellationToken, Task<MessageValidationResult>> BuildValidateDelegate(Type messageType)
-    {
-        var validatorParam = Expression.Parameter(typeof(object), "validator");
-        var messageParam = Expression.Parameter(typeof(object), "message");
-        var ctParam = Expression.Parameter(typeof(CancellationToken), "ct");
+    public static void Register<TMessage>() where TMessage : class
+        => _entries.TryAdd(typeof(TMessage), Create<TMessage>());
 
-        var validatorType = typeof(IMessageValidator<>).MakeGenericType(messageType);
-        var method = validatorType.GetMethod(nameof(IMessageValidator<object>.ValidateAsync))!;
+    public static Entry Get(Type messageType)
+        => _entries.TryGetValue(messageType, out var entry) ? entry : _entries.GetOrAdd(messageType, CreateViaReflection);
 
-        var call = Expression.Call(
-            Expression.Convert(validatorParam, validatorType),
-            method,
-            Expression.Convert(messageParam, messageType),
-            ctParam);
+    private static Entry Create<TMessage>() where TMessage : class => new(
+        typeof(IMessageValidator<TMessage>),
+        typeof(IMessageHandler<TMessage>),
+        (validator, message, ct) => ((IMessageValidator<TMessage>)validator).ValidateAsync((TMessage)message, ct),
+        (handler, message, context, ct) => ((IMessageHandler<TMessage>)handler).HandleAsync((TMessage)message, context, ct));
 
-        return Expression.Lambda<Func<object, object, CancellationToken, Task<MessageValidationResult>>>(
-            call, validatorParam, messageParam, ctParam).Compile();
-    }
-
-    private static Func<object, object, MessageContext, CancellationToken, Task> BuildHandleDelegate(Type messageType)
-    {
-        var handlerParam = Expression.Parameter(typeof(object), "handler");
-        var messageParam = Expression.Parameter(typeof(object), "message");
-        var contextParam = Expression.Parameter(typeof(MessageContext), "context");
-        var ctParam = Expression.Parameter(typeof(CancellationToken), "ct");
-
-        var handlerType = typeof(IMessageHandler<>).MakeGenericType(messageType);
-        var method = handlerType.GetMethod(nameof(IMessageHandler<object>.HandleAsync))!;
-
-        var call = Expression.Call(
-            Expression.Convert(handlerParam, handlerType),
-            method,
-            Expression.Convert(messageParam, messageType),
-            contextParam,
-            ctParam);
-
-        return Expression.Lambda<Func<object, object, MessageContext, CancellationToken, Task>>(
-            call, handlerParam, messageParam, contextParam, ctParam).Compile();
-    }
+    // Only reached when custom middleware sets MessageContext.MessageType to a type that was never
+    // passed to MapSource<T>. Message types are reference types, so the shared canonical
+    // instantiation of Create<T> is always available under Native AOT.
+    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "TMessage is constrained to reference types; shared generic code exists.")]
+    [UnconditionalSuppressMessage("Trimming", "IL2060", Justification = "Create<T> has no trimming-sensitive requirements on T.")]
+    private static Entry CreateViaReflection(Type messageType)
+        => (Entry)_createMethod.MakeGenericMethod(messageType).Invoke(null, null)!;
 }

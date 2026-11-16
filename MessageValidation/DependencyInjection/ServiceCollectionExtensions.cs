@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -94,7 +95,7 @@ public static class ServiceCollectionExtensions
     /// <typeparam name="THandler">The handler implementation type.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
-    public static IServiceCollection AddMessageHandler<TMessage, THandler>(
+    public static IServiceCollection AddMessageHandler<TMessage, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>(
         this IServiceCollection services)
         where TMessage : class
         where THandler : class, IMessageHandler<TMessage>
@@ -110,7 +111,7 @@ public static class ServiceCollectionExtensions
     /// <typeparam name="THandler">The failure handler implementation type.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
-    public static IServiceCollection AddValidationFailureHandler<THandler>(
+    public static IServiceCollection AddValidationFailureHandler<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>(
         this IServiceCollection services)
         where THandler : class, IValidationFailureHandler
     {
@@ -122,7 +123,7 @@ public static class ServiceCollectionExtensions
     /// Registers a dead-letter handler invoked when
     /// <see cref="FailureBehavior.DeadLetter"/> is configured and validation fails.
     /// </summary>
-    public static IServiceCollection AddDeadLetterHandler<THandler>(
+    public static IServiceCollection AddDeadLetterHandler<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>(
         this IServiceCollection services)
         where THandler : class, IDeadLetterHandler
     {
@@ -137,7 +138,7 @@ public static class ServiceCollectionExtensions
     /// <typeparam name="TDeserializer">The deserializer implementation type (e.g., a JSON or Protobuf deserializer).</typeparam>
     /// <param name="services">The service collection.</param>
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
-    public static IServiceCollection AddMessageDeserializer<TDeserializer>(
+    public static IServiceCollection AddMessageDeserializer<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TDeserializer>(
         this IServiceCollection services)
         where TDeserializer : class, IMessageDeserializer
     {

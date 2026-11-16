@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <PackageId>MessageValidation.ImmediateValidations</PackageId>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <Authors>Romain-OD</Authors>
     <Description>Immediate.Validations adapter for the MessageValidation pipeline — bridge source-generated, AOT-friendly, zero-reflection IValidationTarget&lt;T&gt; rules into IMessageValidator&lt;T&gt;.</Description>
     <PackageTags>messaging;validation;message-validation;immediate-validations;immediate;source-generator;aot;pipeline;dotnet;middleware;consumer;microservices</PackageTags>

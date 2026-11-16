@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 namespace MessageValidation;
 
 /// <summary>
@@ -22,7 +23,7 @@ public interface IMessagePipelineBuilder
     /// the per-message scope (<see cref="MessageContext.Services"/>) when available,
     /// otherwise from <see cref="ApplicationServices"/>.
     /// </summary>
-    IMessagePipelineBuilder UseMiddleware<TMiddleware>() where TMiddleware : IMessageMiddleware;
+    IMessagePipelineBuilder UseMiddleware<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TMiddleware>() where TMiddleware : IMessageMiddleware;
 
     /// <summary>
     /// Branches the pipeline: when <paramref name="predicate"/> returns <see langword="true"/>,

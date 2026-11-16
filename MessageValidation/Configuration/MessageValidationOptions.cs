@@ -40,6 +40,7 @@ public sealed class MessageValidationOptions
         where TMessage : class
     {
         _sourceMappings[sourcePattern] = typeof(TMessage);
+        MessageDispatchCache.Register<TMessage>();
         return this;
     }
 
