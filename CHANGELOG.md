@@ -18,6 +18,13 @@ bump is listed under **Version bump only**.
 
 ## [Unreleased]
 
+### Added
+- `examples/`: one runnable example per NuGet package (12), sharing a `Demo` helper that exits 0/1 so each doubles as a smoke test.
+- `examples/compose.yaml` + `run-all.ps1`: run every example against real brokers and the Azure emulators in podman or docker.
+
+### Changed
+- `Example.ImmediateValidation` moved to `examples/MessageValidation.ImmediateValidations.Example`.
+
 ## [2.2.0] - 2026-11-16
 
 ### Added

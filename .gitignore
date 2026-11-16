@@ -13,3 +13,6 @@ obj/
 ## IDE
 .idea/
 *.DotSettings.user
+
+# Local proxy CA certificates for the examples image
+examples/certs/

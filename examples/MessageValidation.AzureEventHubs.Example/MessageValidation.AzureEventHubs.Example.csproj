@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MessageValidation.AzureEventHubs\MessageValidation.AzureEventHubs.csproj" />
+    <Compile Include="..\Shared\TemperatureReading.cs" Link="Shared\TemperatureReading.cs" />
+  </ItemGroup>
+
+</Project>

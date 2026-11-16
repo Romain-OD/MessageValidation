@@ -1,14 +1,14 @@
-using Google.Protobuf;
+﻿using Google.Protobuf;
 using MessageValidation.SparkplugB.Protobuf;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using MessageValidation.Examples;
 using MQTTnet;
 using Metric = MessageValidation.SparkplugB.Protobuf.Payload.Types.Metric;
 
 namespace MessageValidation.SparkplugB.Example;
 
 /// <summary>Runs only for messages that passed Sparkplug B validation.</summary>
-public sealed class SparkplugMetricsHandler(ILogger<SparkplugMetricsHandler> logger) : IMessageHandler<SparkplugBMessage>
+public sealed class SparkplugMetricsHandler(Demo demo) : IMessageHandler<SparkplugBMessage>
 {
     public Task HandleAsync(SparkplugBMessage message, MessageContext context, CancellationToken ct = default)
     {
@@ -21,8 +21,7 @@ public sealed class SparkplugMetricsHandler(ILogger<SparkplugMetricsHandler> log
                 var other => other.ToString(),
             }}"));
 
-        logger.LogInformation("✔ {Type} seq={Seq} from {Edge}: {Metrics}",
-            message.Topic.MessageType, message.Payload.Seq, message.Topic.EdgeNodeId, metrics);
+        demo.Valid(context, $"{message.Topic.MessageType} seq={message.Payload.Seq} from {message.Topic.EdgeNodeId}: {metrics}");
         return Task.CompletedTask;
     }
 }
@@ -32,7 +31,7 @@ public sealed class SparkplugConsumer(IMqttClient client, string broker) : Backg
 {
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        await client.ConnectAsync(new MqttClientOptionsBuilder().WithTcpServer(broker).WithClientId("host-app").Build(), ct);
+        await Demo.RetryAsync(() => client.ConnectAsync(new MqttClientOptionsBuilder().WithTcpServer(broker).WithClientId("host-app").Build(), ct));
         await client.SubscribeAsync(new MqttClientSubscribeOptionsBuilder().WithTopicFilter("spBv1.0/#").Build(), ct);
     }
 }
@@ -45,14 +44,14 @@ public sealed class EdgeNodeSimulator(string broker) : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
         using var client = new MqttClientFactory().CreateMqttClient();
-        await client.ConnectAsync(new MqttClientOptionsBuilder()
+        await Demo.RetryAsync(() => client.ConnectAsync(new MqttClientOptionsBuilder()
             .WithTcpServer(broker)
             .WithClientId("edge-node")
             .WithWillTopic(Topic("NDEATH"))          // broker publishes NDEATH if we crash
             .WithWillPayload(Death().ToByteArray())
-            .Build(), ct);
+            .Build(), ct));
 
-        await Task.Delay(1000, ct); // let the host app subscribe
+        await Task.Delay(2000, ct); // let the host app subscribe
 
         ulong seq = 0;
         await Publish(client, "NBIRTH", new Payload
